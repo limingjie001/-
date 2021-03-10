@@ -5360,17 +5360,15 @@ LOCK-》同步代码块-》同步方法
 
 
 
-# Arraylist*
+# Arraylist（见pdf）*
 
 https://www.bilibili.com/video/BV1gE411A7H8?p=2
 
-## 面试题（见pdf）
 
 
 
 
 
----
 
 # HashMap集合(高级)**
 
@@ -8020,7 +8018,7 @@ happens-before **规定了哪些写操作对其它线程的读操作可见，它
 
 #### CAS
 
-CAS 即 Compare and Swap ，它体现的一种乐观锁的思想，比如多个线程要对一个共享的整型变量执
+CAS 即 Compare and Swap ，它体现的一种**乐观锁的思想**，比如多个线程要对一个共享的整型变量执
 
 行 +1 操作：
 
@@ -8174,7 +8172,9 @@ A **随即升级为重量级锁**，进入重量级锁的流程。
 
 # 数据结构和算法
 
+# shell编程
 
+https://www.bilibili.com/video/BV1z54y1C7Cw
 
 
 
