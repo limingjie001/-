@@ -40,7 +40,7 @@ xshell
 
 JVM中juc、
 
-线程池
+线程池，连接池设计思想
 
 https://blog.csdn.net/mu_wind/article/details/113806680
 
@@ -996,9 +996,9 @@ public static void main(String[] args) throws Exception {
 
  Constructor:==构造方法==
 > 	* 创建对象：
-> 													
+> 														
 > 		* T newInstance(Object... initargs)  
-> 													
+> 														
 > 		（==即 constructor.newInstance("张三", 23);==  ）
 >
 > ​	* 如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法
@@ -8621,7 +8621,9 @@ https://www.bilibili.com/video/BV1z54y1C7Cw
 
 https://www.bilibili.com/video/BV1CJ411m7Gc?p=4
 
+端口号，最大连接数之类的东西要写入配置文件 中，
 
+如何读取配置文件
 
 # 报错信息查看
 
