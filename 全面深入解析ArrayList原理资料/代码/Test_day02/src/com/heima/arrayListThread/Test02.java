@@ -15,6 +15,8 @@ public class Test02 {
     public static void main(String[] args) throws InterruptedException {
         //创建线程安全的集合类Vector
         //List<String> list = new Vector<>();
+
+
         ArrayList<String> list1 = new ArrayList<String>();
         //通过Collections工具类把List变成一个线程安全的集合
         List<String> list = Collections.synchronizedList(list1);

@@ -1,4 +1,12 @@
-# 任务
+任务
+
+==工厂模式==
+
+搞懂springMVC（-Vue-SpringBoot-SpringCloud-Linux）
+
+
+
+---
 
 搞java需要掌握：web了解、java编程能力、linux、数据库sql、中间件
 
@@ -996,9 +1004,9 @@ public static void main(String[] args) throws Exception {
 
  Constructor:==构造方法==
 > 	* 创建对象：
-> 														
+> 																
 > 		* T newInstance(Object... initargs)  
-> 														
+> 																
 > 		（==即 constructor.newInstance("张三", 23);==  ）
 >
 > ​	* 如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法
@@ -1182,7 +1190,7 @@ className=com.reflect.Student
 methodName=sleep
 ```
 
-## ==10、注解==**？？？可以做什么
+## ==10、注解==**
 
 https://www.bilibili.com/video/BV1p4411P7V3?p=4
 
@@ -2872,17 +2880,11 @@ public class ListOfGenerics<T> {
 
 ### 容器类
 
-<img src="https://img2018.cnblogs.com/blog/1362965/201901/1362965-20190118094735724-2129767713.png" alt="img" style="zoom:150%;" />
+<img src="java学习.assets/20190317184953342.png" alt="img" style="zoom:200%;" />
 
  
 
-<img src="https://img2018.cnblogs.com/blog/1362965/201901/1362965-20190118095106326-273814633.png" alt="img" style="zoom:150%;" />
 
-上图是JAVA常见的各个容器的继承关系
-
-
-
-https://www.runoob.com/java/java-collections.html
 
 ### ==Iterable 接口==
 
@@ -2924,14 +2926,7 @@ ListIterator接口继承Iterator接口，==提供了专门操作List的方法==�
 
 ### Collection 接口
 
-我们直接打开API文档进行查看
-![Collection接口](https://img-blog.csdnimg.cn/20190212163053820.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU3NDE0Mg==,size_16,color_FFFFFF,t_70) 
 
-<img src="http://www.2cto.com/uploadfile/Collfiles/20150629/20150629084321323.jpg" alt="这里写图片描述" style="zoom:200%;" />
-
-
-
-文档中写道，JDK 不提供此接口的任何直接 实现：它提供更具体的子接口（如 Set 和 List）实现。==也就是一般不会直接使用Collection，而是会使用它的子类，如List或Set。==
 
 在图中我标注了4点，不同的Collection子类对于**有序性、重复性、null、线程同步**都有不同的策略。基于此，Collection的介绍就这样，下面就其具体的子类来进行介绍。
 
@@ -2939,8 +2934,8 @@ ListIterator接口继承Iterator接口，==提供了专门操作List的方法==�
 
 ### Set和List的区别
 
-- 1. Set 接口实例存储的是无序的，不重复的数据。List 接口实例存储的是有序的，可以重复的元素。
-- 2. Set检索效率低下，删除和插入效率高，插入和删除不会引起元素位置改变 **<实现类有HashSet,TreeSet>**。
+- 1. Set 接口实例存储的是==无序的，不重复的数据==。List 接口实例存储的是==有序的，可以重复的元素==。
+- 2. Set==检索效率低下，删除和插入效率高==，==插入和删除不会引起元素位置改变== **<实现类有==HashSet,TreeSet==>**。
 - 3. List和数组类似，可以动态增长，根据实际存储的数据的长度自动增长List的长度。查找元素效率高，插入删除效率低，因为会引起其他元素位置改变 **<实现类有ArrayList,LinkedList,Vector>** 。
 
 ------
@@ -3827,67 +3822,103 @@ spring AOP
 
 #### 静态代理
 
-https://www.jianshu.com/p/9bcac608c714
+https://mp.weixin.qq.com/s?__biz=Mzg2NTAzMTExNg==&mid=2247484130&idx=1&sn=73741a404f7736c02bcdf69f565fe094&scene=19#wechat_redirect
 
 创建一个接口，然后创建被代理的类实现该接口并且实现该接口中的抽象方法。之后再创建一个代理类，同时使其也实现这个接口。在代理类中持有一个被代理对象的引用，而后在代理类方法中调用该对象的方法。
 
-接口：
+**静态代理角色分析**
 
+- 抽象角色 : 一般使用接口或者抽象类来实现(==共同完成一件事情==)
 
+- 真实角色 : 被代理的角色
 
-```csharp
-public interface HelloInterface {
-    void sayHello();
+- 代理角色 : 代理真实角色 ; 代理真实角色后 , ==一般会做一些附属的操作== .
+
+- 客户  :  使用代理角色来进行一些操作 .
+
+  
+
+**代码实现**
+
+Rent . java 即抽象角色
+
+```java
+//抽象角色：租房
+public interface Rent {
+   public void rent();
 }
 ```
 
-被代理类：
-
-
+Host . java 即真实角色
 
 ```java
-public class Hello implements HelloInterface{
-    @Override
-    public void sayHello() {
-        System.out.println("Hello zhanghao!");
-    }
+//真实角色: 房东，房东要出租房子
+public class Host implements Rent{
+   public void rent() {
+       System.out.println("房屋出租");
+  }
 }
 ```
 
-代理类：
-
-
+Proxy . java 即代理角色
 
 ```java
-public class HelloProxy implements HelloInterface{
-    private HelloInterface helloInterface = new Hello();
-    @Override
-    public void sayHello() {
-        System.out.println("Before invoke sayHello" );
-        helloInterface.sayHello();
-        System.out.println("After invoke sayHello");
-    }
+//代理角色：中介
+public class Proxy implements Rent {
+
+   private Host host;
+   public Proxy() { }
+   public Proxy(Host host) {
+       this.host = host;
+  }
+
+   //租房
+   public void rent(){
+       seeHouse();
+       host.rent();
+       fare();
+  }
+   //看房
+   public void seeHouse(){
+       System.out.println("带房客看房");
+  }
+   //收中介费
+   public void fare(){
+       System.out.println("收中介费");
+  }
 }
 ```
 
-代理类调用：
- 被代理类被传递给了代理类HelloProxy，代理类在执行具体方法时通过所持用的被代理类完成调用。
-
-
+Client . java 即客户
 
 ```java
-    public static void main(String[] args) {
-        HelloProxy helloProxy = new HelloProxy();
-        helloProxy.sayHello();
-    }
-    
-输出：
-Before invoke sayHello
-Hello zhanghao!
-After invoke sayHello
+//客户类，一般客户都会去找代理！
+public class Client {
+   public static void main(String[] args) {
+       //房东要租房
+       Host host = new Host();
+       //中介帮助房东
+       Proxy proxy = new Proxy(host);
+
+       //你去找中介！
+       proxy.rent();
+  }
+}
 ```
 
-使用静态代理很容易就完成了对一个类的代理操作。但是静态代理的缺点也暴露了出来：由于代理只能为一个类服务，如果需要代理的类很多，那么就需要编写大量的代理类，比较繁琐。
+**静态代理的好处:**
+
+- 可以使得我们的真实角色更加纯粹 . 不再去关注一些公共的事情 .
+- 公共的业务由代理来完成 . 实现了业务的分工 ,
+- 公共业务发生扩展时变得更加集中和方便 .
+
+缺点 :
+
+- 类多了 , 多了代理类 , 工作量变大了 . 开发效率降低 .
+
+我们想要静态代理的好处，又不想要静态代理的缺点，所以 , 就有了动态代理 !
+
+
 
 #### ==动态代理==
 
@@ -3919,9 +3950,9 @@ https://www.cnblogs.com/wobuchifanqie/p/9991342.html
 
 使用Proxy.newProxyInstance(ClassLoader loader, Class<?>[ ] interfaces, InvocationHandler h)**==返回某个对象的代理对象==**
 
-  	1.ClassLoader loader:Java类加载器; 可以通过这个类型的加载器，在程序运行时，==将生成的**代理类**加载到JVM==即Java虚拟机中，以便运行时需要！
-  	  2.Class<?>[ ] interfaces:==**被**代理类==的所有==接口==信息; 便于生成的代理类可以具有代理类接口中的所有方法
-  	  3.InvocationHandler h:调用处理器; 调用实现了InvocationHandler 类的一个回调方法
+1.ClassLoader loader:Java类加载器; 可以通过这个类型的加载器，在程序运行时，将生成的==代理类==加载到JVM即Java虚拟机中，以便运行时需要！
+  2.Class<?>[ ] interfaces:==**被**代理类==的所有==接口==信息; 便于生成的代理类可以具有代理类接口中的所有方法
+  3.InvocationHandler h:调用处理器; 调用实现了==InvocationHandler 类==的一个回调方法
 
 
 
@@ -4005,10 +4036,10 @@ import java.lang.reflect.Proxy;
 //使用一个匿名内部类来实现该接口实现InvocationHandler接口,实现invoke方法
 public class HuGeProxy1 {
 
-    private Star hg = new HuGe();//实例化一个对象
-    /*private Star hg;
-    *也可以写一个set方法，把对象传过来
-    */
+   private Star hg;
+    public void setHuGe(HuGe huGe) {
+        this.huGe = huGe;
+    }
     public Star getProcxy(){
         //使用Proxy.newProxyInstance(ClassLoader loader, Class<?>[] interfaces, InvocationHandler h)返回某个对象的代理对象
         /**
@@ -4065,10 +4096,10 @@ import java.lang.reflect.Proxy;
 public class HuGeProxy2 implements InvocationHandler{
 	
     //被代理的接口
-    private Star hg = new HuGe();
-    /*private Star hg;
-    *也可以写一个set方法，把对象传过来
-    */
+    private Star hg;
+    public void setHuGe(HuGe huGe) {
+        this.huGe = huGe;
+    }
     
     
     //生成代理类
@@ -4110,6 +4141,7 @@ public class ProxyTest {
     public void testHuGeProxy1(){
         
         HuGeProxy1 proxy = new HuGeProxy1();//找到胡歌的助理
+        proxy.setHuGe(new HuGe());
         Star hg = proxy.getProcxy();//助理和胡歌洽谈
         hg.sing("《逍遥叹》");//(胡歌答应后)唱歌
         String actResult = hg.act("《琅琊榜》");//(胡歌答应后)演习
@@ -4130,6 +4162,55 @@ public class ProxyTest {
 ```
 
 
+
+##### 深入了解jdk动态代理
+
+编写一个通用的动态代理实现的类！所有的代理对象设置为Object即可！
+
+```java
+public class ProxyInvocationHandler implements InvocationHandler {
+   private Object target;
+
+   public void setTarget(Object target) {
+       this.target = target;
+  }
+
+   //生成代理类
+   public Object getProxy(){
+       return Proxy.newProxyInstance(this.getClass().getClassLoader(),
+               target.getClass().getInterfaces(),this);
+  }
+
+   // proxy : 代理类
+   // method : 代理类的调用处理程序的方法对象.
+   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+       log(method.getName());
+       Object result = method.invoke(target, args);
+       return result;
+  }
+
+   public void log(String methodName){
+       System.out.println("执行了"+methodName+"方法");
+  }
+
+}
+```
+
+测试！
+
+```java
+public class Test {
+   public static void main(String[] args) {
+       //真实对象
+       UserServiceImpl userService = new UserServiceImpl();
+       //代理对象的调用处理程序
+       ProxyInvocationHandler pih = new ProxyInvocationHandler();
+       pih.setTarget(userService); //设置要代理的对象
+       UserService proxy = (UserService)pih.getProxy(); //动态生成代理类！
+       proxy.delete();
+  }
+}
+```
 
 ##### Cglib动态代理
 
@@ -4164,7 +4245,6 @@ https://blog.csdn.net/qq_41854763/article/details/111058947
 > ​	通过CGLIB$emptyArgs我们也可以很容易的猜出这个参数实际就是函数调用时要传递的参数列表。在本例中，由于say()不需要任何参数，所以传个空参即可。
 >
 > 4.MethodProxy methodProxy：==方法的代理==
->
 
 ###### **实例程序**
 
@@ -4478,19 +4558,17 @@ https://blog.csdn.net/whitesun123/article/details/79687879
 
 
 
-## 多线程
+# ==多线程==
 
 https://www.cnblogs.com/java1024/archive/2019/11/28/11950129.html
 
 https://blog.csdn.net/tongxuexie/article/details/80145663
 
-### Java中线程实现的方式
-
-在 Java 中实现多线程有两种手段，一种是继承 Thread 类，另一种就是实现 Runnable 接口。下面我们就分别来介绍这两种方式的使用。
+## Java中线程实现的方式
 
 
 
-#### **继承 Thread 类**
+### 继承 Thread 类
 
 ```java
 class MyThread extends Thread{  // 继承Thread类，作为线程的实现类
@@ -4519,7 +4597,7 @@ public class ThreadDemo02{
 
 
 
-#### **实现 Runnable 接口**
+### 实现 Runnable 接口
 
 ```java
 class MyThread implements Runnable{ // 实现Runnable接口，作为线程的实现类
@@ -4554,7 +4632,7 @@ public class RunnableDemo01{
 
 
 
-#### ==实现callable接口方式：==
+### ==实现callable接口方式==
 
 ```java
 public class MyCallable implements Callable<String> {
@@ -4598,7 +4676,7 @@ public class MyCallable implements Callable<String> {
 
 - 相较于实现Runnable接口的方式，较为繁琐
 
-### 多线程的状态
+## 多线程的状态
 
 要想实现多线程，必须在主线程中创建新的线程对象。任何线程一般具有5种状态，即创建，就绪，运行，阻塞，终止。下面分别介绍一下这几种状态：
 
@@ -4634,9 +4712,9 @@ public class MyCallable implements Callable<String> {
 
 ![img](https://imgconvert.csdnimg.cn/aHR0cDovL21tYml6LnFwaWMuY24vbW1iaXpfcG5nL3YxTGJQUFdpYVN0NldQc2x0aWNFVmpOZnNSTXpxV2dsTldMWGY3YkNTdGJiN2dkTFZSOWxwMjI5aWJCZkFtdHl0VkpSUTg4U3VpYzdLQjlUQ2ZiaWIyMGVJbWcvNjQw?x-oss-process=image/format,png)
 
-#### **取得和设置线程的名称**
+### 取得和设置线程的名称
 
-##### **获取**
+#### 获取
 
 ```java
 //第一种
@@ -4645,7 +4723,7 @@ Thread.currentThread().getName()
 t1.getName()  
 ```
 
-##### **设置**
+#### 设置
 
 ```java
 //第一种写法
@@ -4710,7 +4788,7 @@ new Thread(my)
 
 
 
-#### 多线程常用方法案例
+### 多线程常用方法案例
 
 ```java
  MyThread mt = new MyThread() ;  // 实例化Runnable子类对象 
@@ -4733,7 +4811,7 @@ t3.setPriority(Thread.NORM_PRIORITY) ;  // 优先级最中等
 
 ```
 
-线程停止
+#### 线程停止
 
 多线程中停止线程有三种方式：
 
@@ -4791,7 +4869,9 @@ thread1.interrupt();
 
 
 
-### 线程池???
+#### ==线程安全==
+
+## ==线程池???==
 
 https://blog.csdn.net/qfc8930858/article/details/89791560?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
 
@@ -5388,9 +5468,118 @@ LOCK-》同步代码块-》同步方法
 
 https://www.bilibili.com/video/BV1gE411A7H8?p=2
 
+## 面试题
+
+### 1.ArrayList是如何扩容的？
+
+默认是扩容10
+
+以后每次都是原容量的1.5倍 
+
+### 2.ArrayList频繁扩容导致添加性能急剧下降，如何处理？
+
+指定容量
+
+### 3.ArrayList插入或删除元素一定比LinkedList慢么?
+
+1. ==**数组**删除元素确实要比链表慢==，慢在需要创建新数组，还有比较麻烦的==数据拷贝==
+
+   > ArrayList并不是创建新的数组。因为删除后复制，最后一个元素为null，jvm会回收
+
+   **==但是ArrayList==**底层不是每次删除元素都需要扩容，因此在这个方面相对于链表来说数组的性能更好
+
+2. LinkedList删除元素之所以效率并不高，其原理在于底层先需要对整个集合进行折半的动作，然后又需要对==集合进行遍历一次==，这些操作导致效率变低==（需要调用一个找元素的方法）==
+
+   > LinkedList中找元素的方法：
+   >
+   > ​	因为LinkedList是双向链表，所以如果索引小于长度一半从前往后找，如果大于一半，则从后往前找.if-else中都有循环
+
+### 4.ArrayList是==线程安全==的么？怎么解决
+
+ArrayList==不是线程安全的==，（效率高）
+
+#### 办法一（==Vector类==）
+
+Vector线程安全，效率低
+
+```java
+List<String> list = new Vector<>();
+```
+
+#### 方法二（==Collections类==）
+
+> **Collection 和 Collections 有什么区别？**
+>
+> - java.util.Collection 是一个==集合接口（集合类的一个顶级接口）==。它提供了对==集合对象进行基本操作的**通用接口方法**==。Collection接口在Java 类库中有很多具体的实现。Collection接口的意义是为各种具体的集合提供了最大化的统一操作方式，其==直接继承接口有List与Set==。
+> - Collections则是集合类的一个==工具类/帮助类==，其中提供了==一系列静态方法==，用于对集合中元素进行==排序、搜索以及线程安全==等各种操作。
+
+```java
+ArrayList<String> list1 = new ArrayList<String>();
+//通过Collections工具类把List变成一个线程安全的集合
+List<String> list = Collections.synchronizedList(list1);
+```
+
+或者是
+
+```java
+List<String> list2 = Collections.synchronizedList(new ArrayList<>());
+```
+
+#### ==什么时候加锁==（考虑线程安全）？
+
+> ​		共享变量：（比如说静态变量）不安全
+>
+> ​		私有变量：（局部变量）线程安全.
+>
+> **如果方法内局部变量没有逃离方法的作用访问，它是线程安全的**
+>
+> **如果是局部变量引用了对象，并逃离方法的作用方法，需要考虑线程安全**
+>
+> ​	![image-20210306152257605](java学习.assets/image-20210306152257605.png)
+
+### 5.如何复制某个ArrayList到另一个ArrayList中去？
+
+使用clone()方法
+
+使用ArrayList构造方法
+
+使用addAll方法
+
+
+
+### 6.已知成员变量集合存储N多用户名称,在多线程的环境下,使用迭代器在读取集合数据的同时如何保证还可以正常的写入数据到集合?
+
+加锁不能解决。
+
+使用==CopyOnWriteArrayList==类
+
+
+
+### 7.ArrayList 和 LinkList区别？
+
+**ArrayList**
+
+基于动态数组的数据结构
+
+对于==随机访问==的get和set，ArrayList要==优于==LinkedList
+
+对于随机操作的add和remove，ArrayList不一定比LinkedList慢 (ArrayList底层由于是动态数组，因此并不是每次add和remove的时候都需要创建新数组)
+
+**LinkedList**
+
+基于链表的数据结构
+
+对于顺序操作，LinkedList不一定比ArrayList慢
+
+对于==随机操作==，LinkedList效率==明显较低==
+
 
 
 # treeSet??
+
+
+
+# Jquery（停更）
 
 
 
@@ -6982,254 +7171,1330 @@ HashMap是非线程安全的，只是用于单线程环境下，**多线程环�
 
 
 
+# Spring
 
-# spring（停更）
+spring编程思想视频
+
+https://www.bilibili.com/video/BV1WE411d7Dv?p=2
 
 ## 官方文档
 
 https://docs.spring.io/spring-boot/docs/2.4.3/reference/html/getting-started.html#getting-started-system-requirements
 
-## AOP思想
+## ==AOP思想***==
+
+视频
+
+https://www.bilibili.com/video/BV1WE411d7Dv?p=20&spm_id_from=pageDriver
+
+笔记
+
+https://mp.weixin.qq.com/s?__biz=Mzg2NTAzMTExNg==&mid=2247484138&idx=1&sn=9fb187c7a2f53cc465b50d18e6518fe9&scene=19#wechat_redirect
+
+### 什么是AOP
+
+AOP（Aspect Oriented Programming）意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
+
+![image-20210318160921941](java学习.assets/image-20210318160921941.png)
 
 
 
-https://www.jianshu.com/p/f1770b9dce27
+### Aop在Spring中的作用
 
-==**这种在运行时，动态地将代码切入到类的指定方法、指定位置上的编程思想就是面向切面的编程。**==
+提供声明式事务；允许用户自定义切面
 
-> 面向切面编程（AOP是Aspect Oriented Program的首字母缩写） ，我们知道，面向对象的特点是继承、多态和封装。而封装就要求将功能分散到不同的对象中去，这在软件设计中往往称为职责分配。实际上也就是说，让不同的类设计不同的方法。这样代码就分散到一个个的类中去了。这样做的好处是降低了代码的复杂程度，使类可重用。
->       但是人们也发现，在分散代码的同时，也增加了代码的重复性。什么意思呢？比如说，我们在两个类中，可能都需要在每个方法中做日志。按面向对象的设计方法，我们就必须在两个类的方法中都加入日志的内容。也许他们是完全相同的，但就是因为面向对象的设计让类与类之间无法联系，而不能将这些重复的代码统一起来。
->     也许有人会说，那好办啊，我们可以将这段代码写在一个独立的类独立的方法里，然后再在这两个类中调用。但是，这样一来，这两个类跟我们上面提到的独立的类就有耦合了，它的改变会影响这两个类。那么，**有没有什么办法，能让我们在需要的时候，随意地加入代码呢？**==**这种在运行时，动态地将代码切入到类的指定方法、指定位置上的编程思想就是面向切面的编程。**== 
->       一般而言，我们管切入到指定类指定方法的代码片段称为切面，而切入到哪些类、哪些方法则叫切入点。有了AOP，我们就可以把几个类共有的代码，抽取到一个切片中，等到需要时再切入对象中去，从而改变其原有的行为。
-> 这样看来，AOP其实只是OOP的补充而已。OOP从横向上区分出一个个的类来，而AOP则从纵向上向对象中加入特定的代码。有了AOP，OOP变得立体了。如果加上时间维度，AOP使OOP由原来的二维变为三维了，由平面变成立体了。从技术上来说，AOP基本上是通过代理机制实现的。 
->      AOP在编程历史上可以说是里程碑式的，对OOP编程是一种十分有益的补充。
+以下名词需要了解下：
+
+- 横切关注点：跨越应用程序多个模块的方法或功能。即是，==与我们业务逻辑无关的，但是我们需要关注的部分==，就是横切关注点。如**日志 , 安全 , 缓存 , 事务等等 ....**
+- 切面（ASPECT）：横切关注点 ==被模块化== 的特殊对象。即，==它是一个类。==
+- 通知（Advice）：切面必须==要完成的工作==。即，==它是类中的一个方法。==
+- 目标（Target）：被通知对象。
+- 代理（Proxy）：向目标对象应用通知之后创建的对象。
+- 切入点（PointCut）：切面通知 执行的 “地点”的定义。
+- 连接点（JointPoint）：与切入点匹配的执行点。
 
 
+
+![image-20210318160938337](java学习.assets/image-20210318160938337.png)
+
+SpringAOP中，通过Advice定义横切逻辑，Spring中支持5种类型的Advice:
+
+
+
+![image-20210318160954100](java学习.assets/image-20210318160954100.png)
+
+即 Aop 在 不改变原有代码的情况下 , 去增加新的功能 .
+
+
+
+Aspectj切入点语法定义
+在使用spring框架配置AOP的时候，不管是通过XML配置文件还是注解的方式都需要定义pointcut”切入点”
+例如定义切入点表达式execution (* com.sample.service.impl..*3*(..))
+execution()是最常用的切点函数，其语法如下所示:
+整个表达式可以分为五个部分:
+1、execution():表达式主体。
+2、第一个*号:表示返回类型，*号表示所有的类型。
+3、包名:表示需要拦截的包名，后面的两个句点表示当前包和当前包的所有子包,com.sample.service.impl包、子孙包下所有类的方法。
+4、第二个*号:表示类名，*号表示所有的类。
+5、*(.):最后这个星号表示方法名，*号表示所有的方法，后面括弧里面表示方法的参数，两个句点表示任何参数
+
+
+
+==【重点】使用AOP织入，需要导入一个依赖包！==
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+<dependency>
+   <groupId>org.aspectj</groupId>
+   <artifactId>aspectjweaver</artifactId>
+   <version>1.9.4</version>
+</dependency>
+```
+
+### 实现AOP
+
+笔记
+
+https://mp.weixin.qq.com/s?__biz=Mzg2NTAzMTExNg==&mid=2247484138&idx=1&sn=9fb187c7a2f53cc465b50d18e6518fe9&scene=19#wechat_redirect
+
+#### 第一种方式
+
+**通过 Spring API 实现**
+
+首先编写我们的业务接口和实现类
+
+```java
+public interface UserService {
+
+   public void add();
+
+   public void delete();
+
+   public void update();
+
+   public void search();
+
+}
+
+public class UserServiceImpl implements UserService{
+
+   @Override
+   public void add() {
+       System.out.println("增加用户");
+  }
+
+   @Override
+   public void delete() {
+       System.out.println("删除用户");
+  }
+
+   @Override
+   public void update() {
+       System.out.println("更新用户");
+  }
+
+   @Override
+   public void search() {
+       System.out.println("查询用户");
+  }
+}
+```
+
+然后去写我们的增强类 , 我们编写两个 , 一个前置增强 一个后置增强
+
+```java
+public class Log implements MethodBeforeAdvice {
+
+   //method : 要执行的目标对象的方法
+   //objects : 被调用的方法的参数
+   //Object : 目标对象
+   @Override
+   public void before(Method method, Object[] objects, Object o) throws Throwable {
+       System.out.println( o.getClass().getName() + "的" + method.getName() + "方法被执行了");
+  }
+}
+
+public class AfterLog implements AfterReturningAdvice {
+   //returnValue 返回值
+   //method被调用的方法
+   //args 被调用的方法的对象的参数
+   //target 被调用的目标对象
+   @Override
+   public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
+       System.out.println("执行了" + target.getClass().getName()
+       +"的"+method.getName()+"方法,"
+       +"返回值："+returnValue);
+  }
+}
+```
+
+最后去spring的文件中注册 , 并实现aop切入实现 , 注意导入约束 .
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:aop="http://www.springframework.org/schema/aop"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+   <!--注册bean-->
+   <bean id="userService" class="com.kuang.service.UserServiceImpl"/>
+   <bean id="log" class="com.kuang.log.Log"/>
+   <bean id="afterLog" class="com.kuang.log.AfterLog"/>
+
+   <!--aop的配置-->
+   <aop:config>
+       <!--切入点 expression:表达式匹配要执行的方法-->
+       <aop:pointcut id="pointcut" expression="execution(* com.kuang.service.UserServiceImpl.*(..))"/>
+       <!--执行环绕; advice-ref执行方法 . pointcut-ref切入点-->
+       <aop:advisor advice-ref="log" pointcut-ref="pointcut"/>
+       <aop:advisor advice-ref="afterLog" pointcut-ref="pointcut"/>
+   </aop:config>
+
+</beans>
+```
+
+测试
+
+```java
+public class MyTest {
+   @Test
+   public void test(){
+       ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+       UserService userService = (UserService) context.getBean("userService");
+       userService.search();
+  }
+}
+```
+
+Aop的重要性 : 很重要 . 一定要理解其中的思路 , 主要是思想的理解这一块 .
+
+Spring的Aop就是将公共的业务 (日志 , 安全等) 和领域业务结合起来 , 当执行领域业务时 , 将会把公共业务加进来 . 实现公共业务的重复利用 . 领域业务更纯粹 , 程序猿专注领域业务 , 其本质还是动态代理 . 
+
+
+
+#### 第二种方式
+
+**自定义类来实现Aop**
+
+目标业务类不变依旧是userServiceImpl
+
+第一步 : 写我们自己的一个切入类
+
+```java
+public class DiyPointcut {
+
+   public void before(){
+       System.out.println("---------方法执行前---------");
+  }
+   public void after(){
+       System.out.println("---------方法执行后---------");
+  }
+   
+}
+```
+
+去spring中配置
+
+```xml
+<!--第二种方式自定义实现-->
+<!--注册bean-->
+<bean id="diy" class="com.kuang.config.DiyPointcut"/>
+
+<!--aop的配置-->
+<aop:config>
+   <!--第二种方式：使用AOP的标签实现-->
+   <aop:aspect ref="diy">
+       <aop:pointcut id="diyPonitcut" expression="execution(* com.kuang.service.UserServiceImpl.*(..))"/>
+       <aop:before pointcut-ref="diyPonitcut" method="before"/>
+       <aop:after pointcut-ref="diyPonitcut" method="after"/>
+   </aop:aspect>
+</aop:config>
+```
+
+测试：
+
+```java
+public class MyTest {
+   @Test
+   public void test(){
+       ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+       UserService userService = (UserService) context.getBean("userService");
+       userService.add();
+  }
+}
+```
+
+#### 第三种方式
+
+**注解实现**
+
+第一步：编写一个注解实现的增强类
+
+```
+package com.kuang.config;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+
+@Aspect
+public class AnnotationPointcut {
+   @Before("execution(* com.kuang.service.UserServiceImpl.*(..))")
+   public void before(){
+       System.out.println("---------方法执行前---------");
+  }
+
+   @After("execution(* com.kuang.service.UserServiceImpl.*(..))")
+   public void after(){
+       System.out.println("---------方法执行后---------");
+  }
+
+   @Around("execution(* com.kuang.service.UserServiceImpl.*(..))")
+   public void around(ProceedingJoinPoint jp) throws Throwable {
+       System.out.println("环绕前");
+       System.out.println("签名:"+jp.getSignature());
+       //执行目标方法proceed
+       Object proceed = jp.proceed();
+       System.out.println("环绕后");
+       System.out.println(proceed);
+  }
+}
+```
+
+第二步：在Spring配置文件中，注册bean，并增加支持注解的配置
+
+```
+<!--第三种方式:注解实现-->
+<bean id="annotationPointcut" class="com.kuang.config.AnnotationPointcut"/>
+<aop:aspectj-autoproxy/>
+```
+
+aop:aspectj-autoproxy：说明
+
+```
+通过aop命名空间的<aop:aspectj-autoproxy />声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面。当然，spring 在内部依旧采用AnnotationAwareAspectJAutoProxyCreator进行自动代理的创建工作，但具体实现的细节已经被<aop:aspectj-autoproxy />隐藏起来了
+
+<aop:aspectj-autoproxy />有一个proxy-target-class属性，默认为false，表示使用jdk动态代理织入增强，当配为<aop:aspectj-autoproxy  poxy-target-class="true"/>时，表示使用CGLib动态代理技术织入增强。不过即使proxy-target-class设置为false，如果目标类没有声明接口，则spring将自动使用CGLib动态代理。
+```
+
+
+
+## ==IOC思想**==
+
+ioc笔记
+
+https://mp.weixin.qq.com/s?__biz=Mzg2NTAzMTExNg==&mid=2247484092&idx=1&sn=ab5bfb967cdd0b4268517e0339b12d61&scene=19#wechat_redirect
+
+视频理解
+
+https://www.bilibili.com/video/BV1WE411d7Dv?p=4
 
 ---
 
-AOP全称`Aspect Oriented Programming`意为面向切面编程，也叫做面向方法编程，是通过预编译方式和运行期动态代理的方式实现不修改源代码的情况下给程序动态统一添加功能的技术。
+### 理解ioc
 
-AOP技术利用一种称为“横切”的技术，剖解开封装对象的内部，**将影响多个类的==公共行为==封装到一个可重用的模块中，并将其命名为**`Aspect`切面。所谓的切面，简单来说就是**与业务无关，却为业务模块所共同调用的逻辑，将其封装起来便于减少系统的重复代码，降低模块的耦合度，有利用未来的可操作性和可维护性。**
+UserDao接口
 
-利用AOP可以对业务逻辑各个部分进行隔离，从而使业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高开发效率。
+```java
+public interface UserDao {
+   public void getUser();
+}
+```
 
-AOP的使用场景主要包括**日志记录、性能统计、安全控制、事务处理、异常处理等。**
+UserServiceImpl实现接口
 
-例如：日志功能，**日志代码往往横向散布在所有对象层次中，而与之对应的对象的核心功能毫无关系**。对于其他类型的代码，如安全性、异常处理、透明的持续性等也都是如此，**这种散布在各处而且无关的代码被称为==横切==**（cross-cutting）。在OOP设计中，它们会导致大量重复的代码，不利用模块的重用。
+```java
+public class UserServiceImpl implements UserService {
+   private UserDao userDao;
+// 利用set实现
+   public void setUserDao(UserDao userDao) {
+       this.userDao = userDao;
+  }
 
-<img src="https:////upload-images.jianshu.io/upload_images/4933701-200f890ecfb3c14c.png?imageMogr2/auto-orient/strip|imageView2/2/w/488/format/webp" alt="img" style="zoom:200%;" />
+   @Override
+   public void getUser() {
+       userDao.getUser();
+  }
+}
+```
 
-​																		
+==通过set方法，传什么对象，就使用什么对象的实现类==
 
-例如：银行系统的取款流程和查询余额的流程中都有存在相同的验证流程
+测试类
 
-<img src="https:////upload-images.jianshu.io/upload_images/4933701-b448b612be95c1de.png?imageMogr2/auto-orient/strip|imageView2/2/w/1141/format/webp" alt="img" style="zoom: 200%;" />
+```java
+@Test
+public void test(){
+   UserServiceImpl service = new UserServiceImpl();
+   service.setUserDao( new UserDaoMySqlImpl() );
+   service.getUser();
+   //那我们现在又想用Oracle去实现呢
+   service.setUserDao( new UserDaoOracleImpl() );
+   service.getUser();
+}
+```
 
 
 
-### AOP与OOP有什么关系呢？
+以前所有东西都是由程序去进行控制创建 , 而现在是由我们自行控制创建对象 , 把主动权交给了调用者 . 程序不用去管怎么创建,怎么实现了 . 它只负责提供一个接口 .
 
-AOP和OOP是面向不同领域的两种思想，==OOP面向对象编程主要是针对业务处理过程中的实体的属性和行为的抽象与封装，以获得更加清晰高效地逻辑单元==。AOP面向切面编程是==针对业务处理过程中的切面进行提取==，它所面对的是==处理过程中某个步骤或阶段==，以获得逻辑过程中==各部分之间低耦合性的隔离效果==。
+这种思想 , 从本质上解决了问题 , 我们程序员不再去管理对象的创建了 , 更多的去关注业务的实现 . 耦合性大大降低 . 这也就是IOC的原型 !
 
-**AOP可以说是OOP的补充和完善**，OOP引入封装、继承、多态等概念建立了一种对象层次结构，用来模拟公共行为的一个集合。当需要为分散的对象引入公共行为的时候，OOP显得无能为力，也就是说，OOP允许定义从上到下的关系，但并不适合定义从左到右的关系。
+### ioc本质
 
-### AOP的本质是什么呢？
+**控制反转IoC(Inversion of Control)，是一种设计思想，DI(依赖注入)是实现IoC的一种方法**，也有人认为DI只是IoC的另一种说法。没有IoC的程序中 , 我们使用面向对象编程 , 对象的创建与对象间的依赖关系完全硬编码在程序中，对象的创建由程序自己控制，控制反转后将对象的创建转移给第三方，个人认为所谓控制反转就是：获得依赖对象的方式反转了。
 
-AOP是实现**分散关注**的编程方法，将关注封装在切面中。如何分散关注呢？**将需求功能从不相关的类中分离出来，同时使多个类共用一个行为，一旦行为发生变化，不必修改多个类，只修改行为即可。**
 
-AOP将软件系统划分为两个部分：**核心关注点、横切关注点**，业务处理的主要流程是核心关注点，与之关系不大的部分是横切关注点。横切关注点的特点是经常发生在核心关注点的多个位置，而且它们功能基本相似。AOP的作用在于分离系统中的各个关注点，将核心关注点和横切关注点分离开来。
 
-![img](https:////upload-images.jianshu.io/upload_images/4933701-8f79e31402bad677.png?imageMogr2/auto-orient/strip|imageView2/2/w/420/format/webp)
+![图片](java学习.assets/640)
 
-把模块作为一批关注点来实现
+**IoC是Spring框架的核心内容**，使用多种方式完美的实现了IoC，可以使用XML配置，也可以使用注解，新版本的Spring也可以零配置实现IoC。
 
-AOP只是一个概念并没有设定具体语言的实现，它能克服那些只有单继承特性语言的缺点。实现AOP的技术主要分为两类：一类是采用动态代理技术利用截取消息的方式，对消息进行装饰以取代原有对象行为的执行。另一类是采用静态织入的方式，引入特定语法创建切面，从而使编译器可以在编译期间织入相关的切面代码。
 
-AOP运行原理是什么样的呢？
 
-<img src="https:////upload-images.jianshu.io/upload_images/4933701-8a0ad79b9846acf4.png?imageMogr2/auto-orient/strip|imageView2/2/w/552/format/webp" alt="img" style="zoom:200%;" />
+**控制反转是一种通过描述（XML或注解）并通过第三方去生产或获取特定对象的方式。在Spring中实现控制反转的是IoC容器，其实现方法是依赖注入（Dependency Injection,DI）。**
 
-AOP运行原理
 
-<img src="https:////upload-images.jianshu.io/upload_images/4933701-e377ed0a017f05d7.png?imageMogr2/auto-orient/strip|imageView2/2/w/833/format/webp" alt="img" style="zoom:200%;" />
 
-​																AOP体系结构
 
-AOP使用场景
 
-> AOP 主要应用场景有：
->
-> 1. Authentication 权限
->
-> 2. Caching 缓存
->
-> 3. Context passing 内容传递
->
-> 4. Error handling 错误处理
->
-> 5. Lazy loading 懒加载
->
-> 6. Debugging 调试
->
-> 7. logging, tracing, profiling and monitoring 记录跟踪 优化 校准
->
-> 8. Performance optimization 性能优化
->
-> 9. Persistence 持久化
->
-> 10. Resource pooling 资源池
->
-> 11. Synchronization 同步
->
-> 12. Transactions 事务
+这个过程就叫控制反转 :
 
-### ==AOP核心概念有哪些呢？==
+- 控制 : 谁来控制对象的创建 , 传统应用程序的对象是由程序本身控制创建的 , 使用Spring后 , 对象是由Spring来创建的
+- 反转 : 程序本身不创建对象 , 而变成被动的接收对象 .
 
-![image-20210305161854011](java学习.assets/image-20210305161854011.png)
+依赖注入 : 就是利用set方法来进行注入的.
 
-- 横切关注点
+ IOC是一种编程思想，由主动的编程变成被动的接收
 
-对哪些方法进行拦截，拦截后怎样处理。
 
-- `Aspect` 切面
 
-**切面是散落在系统各处通用的业务逻辑代码，如日志模块、权限模块、事务模块等。**
 
-**切面用来装载切入点`PointCut`和通知`Advice`**
 
-切面**==通常是一个类==**，可以==**定义切入点和通知**==。类是对物体特征的抽象，切面是对横切关注点的抽象。
+## ioc创建对象的方式
 
-切面是业务流程运行的某个特定步骤，是应用运行过程中的关注点，**关注点通常会横切多个对象，因此也被称为横切关注点。**
+### 无参构造
 
-- `JointPoint` 连接点
+1、User.java
 
-连接点是程序执行过程中明确的点，一般是类中方法的调用。**连接点是程序在运行过程中==能够插入切面的地点==，比如方法调用、异常抛出、字段修改等。**
+```java
+public class User {
 
-<img src="https:////upload-images.jianshu.io/upload_images/4933701-6b5b6a276b19cce0.png?imageMogr2/auto-orient/strip|imageView2/2/w/506/format/webp" alt="img" style="zoom:200%;" />
+   private String name;
 
-​																	连接点
+   public User() {
+       System.out.println("user无参构造方法");
+  }
 
-- `Advice` 通知
+   public void setName(String name) {
+       this.name = name;
+  }
 
-通知是AOP在特定切入点上执行的增强处理，**是拦截到连接点之后要执行的代码**，通知可以分为前置通知`Before`、后置通知`AfterReturning`、异常通知`AfterThrowing`、最终通知`After`、环绕通知`Around`五类。
+   public void show(){
+       System.out.println("name="+ name );
+  }
+
+}
+```
+
+2、==**beans.xml**==
 
-- `PointCut` 切入点
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-**切入点是带有通知的连接点**，在程序中主要体现为编写切入点表达式。切入点是对连接点进行拦截的定义。切入点用于定义通知应该切入到哪些连接点上，不同的通知需要切入到不同的连接点上，这种精准的匹配是由切入点的正则表达式来定义的。
+   <bean id="user" class="com.kuang.pojo.User">
+       <property name="name" value="kuangshen"/>
+   </bean>
 
-切入点是可以插入增强处理的连接点，当某个连接点满足执行要求时，该连接点将被连接增强处理，该连接点也就变成了切入点。
+</beans>
+```
 
-切入点是拦截的方法，连接点`JointPoint`拦截后将变成切入点。
+3、测试类
 
-- `Proxy` 代理对象
+```java
+@Test
+public void test(){
+   ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+   //在执行getBean的时候, user已经创建好了 , 通过无参构造
+   User user = (User) context.getBean("user");
+   //调用对象的方法 .
+   user.show();
+}
+```
 
-代理对象是AOP创建的对象，包含通知，代理是目标对象的加强。 代理是将通知应用到目标对象之后被动态创建的对象，**==可以简单理解代理对象的功能等同于目标对象的核心业务逻辑功能加上共有功能==**。代理对象对于使用者而言是透明的，是程序运行过程中的产物。
+结果可以发现，在调用show方法之前，User对象已经通过无参构造初始化了！
 
-- `Weaving` 织入
+### 有参构造
 
-**通过切入点切入，将切面应用到目标对象并导致代理对象创建的过程**。将切面应用到目标对象从而创建一个新的代理对象的过程，这个过程可以发生在编译器、类转载期、运行期，不同的发生点有着不同的前提条件。如果发生在编译器就需要有一个支持这种AOP实现的特殊编译器，发生在类转载期就需要有一个支持AOP实现的特殊类转载其，发生在运行期则可以直接通过反射机制与动态代理机制来动态实现。
+1、UserT . java
 
-- `Target` 目标对象
+```java
+public class UserT {
 
-目标对象是指代理的目标对象，是指**==要织入的对象模块==**。目标对象是那些即将切入切面的对象，也就是被通知的对象。这些对象中已经只剩下干干净净的核心业务逻辑代码，所有的共有功能等待AOP容器的切入。
+   private String name;
 
-目标对象是AOP进行增强处理的对象，也被称为增强的对象。如果AOP是通过运行时代理来实现的，那么这个对象将是一个被代理的对象。
+   public UserT(String name) {
+       this.name = name;
+  }
 
-<img src="https:////upload-images.jianshu.io/upload_images/4933701-e3d88528ee84027c.png?imageMogr2/auto-orient/strip|imageView2/2/w/484/format/webp" alt="img" style="zoom:200%;" />
+   public void setName(String name) {
+       this.name = name;
+  }
 
-​																		                              AOP
+   public void show(){
+       System.out.println("name="+ name );
+  }
 
-AOP是典型的代理模式的体现，代理模式的特征是代理类与委托类有同样的接口，代理类主要负责为委托类预处理消息、过滤消息、将消息转发给委托类、事后处理消息等。代理类与委托类之间通常会存在关联关系，一个代理类的对象与一个委托类的对象相关联，代理类的对象本身并不真正实现服务，而是通过调用委托类的对象方法来提供特定的服务。
+}
+```
 
-## IOC理解
+2、==beans.xml 有三种方式编写==
 
-https://blog.csdn.net/weixin_40867255/article/details/91049459
+​	2.1下标
 
-### 博客一
+```xml
+<!-- 第一种根据index参数下标设置 -->
+<bean id="userT" class="com.kuang.pojo.UserT">
+   <!-- index指构造方法 , 下标从0开始 -->
+   <constructor-arg index="0" value="kuangshen2"/>
+</bean>
+```
 
-　　首先要分享的是Iteye的开涛这位技术牛人对Spring框架的IOC的理解，写得非常通俗易懂，以下内容全部来自原文，原文地址：http://jinnianshilongnian.iteye.com/blog/1413846
+​	2.2==**name**==
 
-#### 1.1、IoC是什么
+```xml
+<!-- 第二种根据参数名字设置 -->
+<bean id="userT" class="com.kuang.pojo.UserT">
+   <!-- name指参数名 -->
+   <constructor-arg name="name" value="kuangshen2"/>
+</bean>
+```
 
-分享Iteye的开涛对Ioc的精彩讲解
+​	2.3参数类型（不推荐使用）
 
-　　Ioc—Inversion of Control，即“控制反转”，不是什么技术，而是一种设计思想。**在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。**如何理解好Ioc呢？理解好Ioc的关键是要明确“谁控制谁，控制什么，为何是反转（有反转就应该有正转了），哪些方面反转了”，那我们来深入分析一下：
+```xml
+<!-- 第三种根据参数类型设置（多个相同类型时不建议使用） -->
+<!-- 基本类型可以直接用，引用类型必须用限定名 -->
+<bean id="userT" class="com.kuang.pojo.UserT">
+   <constructor-arg type="java.lang.String" value="kuangshen2"/>
+</bean>
+```
 
-●==谁控制谁，控制什么==：传统Java SE程序设计，**我们直接在对象内部通过new进行创建对象，是程序主动去创建依赖对象**；而**IoC是有专门一个容器来创建这些对象，即由Ioc容器来控制对 象的创建**；
+3、测试
 
-​		谁控制谁？当然是IoC 容器控制了对象；
+```java
+@Test
+public void testT(){
+   ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+   UserT user = (UserT) context.getBean("userT");
+   user.show();
+}
+```
 
-​		控制什么？那就是主要控制了外部资源获取（不只是对象包括比如文件等）。
+结论：在配置文件加载的时候。其中管理的对象都已经初始化了！
 
-●==为何是反转，哪些方面反转了==：有反转就有正转，传统应用程序是**由我们自己在对象中主动控制去直接获取依赖对象**，也就是正转；而反转则是由**容器来帮忙创建及注入依赖对象**；
+## Spring配置
 
-​		为何是反转？因为由容器帮我们查找及注入依赖对象，对象只是被动的接受依赖对象，所以是反转；
+### 别名
 
-​		哪些方面反转了？依赖对象的获取被反转了。
+alias 设置别名 , 为bean设置别名 , 可以设置多个别名。别名和原名都可以用
 
-用图例说明一下，传统程序设计如图2-1，都是主动去创建相关对象然后再组合起来：
+```xml
+<!--设置别名：在获取Bean的时候可以使用别名获取-->
+<alias name="userT" alias="userNew"/>
+```
 
-图1-1 传统应用程序示意图
+#### Bean的配置
 
-当有了IoC/DI的容器后，在客户端类中不再主动去创建这些对象了，如图2-2所示:
+```xml
+<!--bean就是java对象,由Spring创建和管理-->
 
-图1-2有IoC/DI容器后程序结构示意图
+<!--
+   id 是bean的标识符,要唯一,如果没有配置id,name就是默认标识符
+   如果配置id,又配置了name,那么name是别名
+   name可以设置多个别名,可以用逗号,分号,空格隔开
+   如果不配置id和name,可以根据applicationContext.getBean(.class)获取对象;
 
-#### 1.2、IoC能做什么
+class是bean的全限定名=包名+类名
+-->
+<bean id="hello" name="hello2 h2,h3;h4" class="com.kuang.pojo.Hello">
+   <property name="name" value="Spring"/>
+</bean>
+```
 
-　　IoC 不是一种技术，只是一种思想，一个重要的面向对象编程的法则，==它能指导我们如何设计出松耦合、更优良的程序==。**传统应用程序**都是由我们在==类内部主动创建依赖对象，从而导致类与类之间高耦合==，难于测试；有了IoC容器后，把创建和查找依赖对象的控制权交给了容器，由容器进行注入组合对象，所以对象与对象之间是 松散耦合，这样==也方便测试，利于功能复用==，==更重要的是使得程序的整个体系结构变得非常灵活。==
+![image-20210317091718753](java学习.assets/image-20210317091718753.png)
 
-其实IoC对编程带来的最大改变不是从代码上，而是**从思想上，发生了“主从换位”的变化**。**应用程序原本是老大，要获取什么资源都是主动出击，但是在IoC/DI思想中，应用程序就变成被动的了，被动的等待IoC容器来创建并注入它所需要的资源了。**
+#### bean》property标签
 
-IoC很好的体现了面向对象设计法则之一—— 好莱坞法则：“别找我们，我们找你”；即由IoC容器帮对象找相应的依赖对象并注入，而不是由对象主动去找。
+1. **name 属性值，在实体 bean 中==必须有对应的 set== 方法，否则报错** 
+2. **ref引用一个==spring已经存在的对象==,value创建一个新的对象**
+3. **value==可以赋==一些==简单类型的值==，ref可以==引用其他的bean对象==。**
 
-#### 1.3、IoC和DI
+**ref与value区别**
 
-　　DI—Dependency Injection，即“**依赖注入**”：组件之间依赖关系由容器在运行期决定，形象的说，即**由容器动态的将某个依赖关系注入到组件之中**。依赖注入的目的并非为软件系统带来更多功能，而是为了提升组件重用的频率，并为系统搭建一个灵活、可扩展的平台。**通过依赖注入机制，我们只需要通过简单的配置，而无需任何代码就可指定目标需要的资源，完成自身的业务逻辑，而==不需要关心具体的资源来自何处，由谁实现==。**
+> **value：** 是当bean实例的对象通过setter方法对对象属性进行注入时，该属性不属于bean-id引用
+> **ref：** 是当bean实例的对象通过setter方法对对象属性进行注入时，该属性属于bean-id引用（==**一般是对类型是类的属性进行注入才会用**==）
 
-理解DI的关键是：“谁依赖谁，为什么需要依赖，谁注入谁，注入了什么”，那我们来深入分析一下：
 
-●谁依赖于谁：当然是应用程序依赖于IoC容器；
 
-●为什么需要依赖：应用程序需要IoC容器来提供对象需要的外部资源；
+#### import
 
-●谁注入谁：很明显是IoC容器注入应用程序某个对象，应用程序依赖的对象；
+团队的合作通过import来实现 .
 
-●注入了什么：就是注入某个对象所需要的外部资源（包括对象、资源、常量数据）。
+```xml
+<import resource="{path}/beans.xml"/>
+```
 
-IoC和DI由什么关系呢？其实它们是同一个概念的不同角度描述，由于控制反转概念比较含糊（可能只是理解为容器控制对象这一个层面，很难让人想到谁来维护对象关系），所以2004年大师级人物Martin Fowler又给出了一个新的名字：“依赖注入”，相对IoC 而言，“依赖注入”明确描述了“被注入对象依赖IoC容器配置依赖对象”。
+这个import，一般用于团队开发使用，==他可以将多个配置文件，导入合并为一个==
+假设，现在项目中有多个人开发，这三个人复制不同的类开发，不同的类需要注册在不同的bean中,
+我们可以利
+用import将所有人的beans.xml合并为一个总的!
 
-看过很多对Spring的Ioc理解的文章，好多人对Ioc和DI的解释都晦涩难懂，反正就是一种说不清，道不明的感觉，读完之后依然是一头雾水，感觉就是开涛这位技术牛人写得特别通俗易懂，他清楚地解释了IoC(控制反转) 和DI(依赖注入)中的每一个字，读完之后给人一种豁然开朗的感觉。我相信对于初学Spring框架的人对Ioc的理解应该是有很大帮助的。
+**使用的时候，**==直接使用总的配置就可以了==
 
-### 博客二
+## 依赖注入（DI）
 
-分享Bromon的blog上对IoC与DI浅显易懂的讲解
+### 概念
 
-#### 2.1、IoC(控制反转)
+- 依赖注入（Dependency Injection,DI）。
+- 依赖 : **指Bean对象的创建依赖于容器** . Bean对象的依赖资源 .
+- 注入 : **指Bean对象所依赖的资源** , **由容器来设置和装配 .**
 
-　　首先想说说IoC（Inversion of Control，控制反转）。这是spring的核心，贯穿始终。所谓IoC，对于spring框架来说，就是由spring来负责控制对象的生命周期和对象间的关系。这是什么意思呢，举个简单的例子，我们是如何找女朋友的？常见的情况是，我们到处去看哪里有长得漂亮身材又好的mm，然后打听她们的兴趣爱好、qq号、电话号、ip号、iq号………，想办法认识她们，投其所好送其所要，然后嘿嘿……这个过程是复杂深奥的，我们必须自己设计和面对每个环节。传统的程序开发也是如此，在一个对象中，如果要使用另外的对象，就必须得到它（自己new一个，或者从JNDI中查询一个），使用完之后还要将对象销毁（比如Connection等），对象始终会和其他的接口或类藕合起来。
 
-那么IoC是如何做的呢？有点像通过婚介找女朋友，在我和女朋友之间引入了一个第三者：婚姻介绍所。婚介管理了很多男男女女的资料，我可以向婚介提出一个列表，告诉它我想找个什么样的女朋友，比如长得像李嘉欣，身材像林熙雷，唱歌像周杰伦，速度像卡洛斯，技术像齐达内之类的，然后婚介就会按照我们的要求，提供一个mm，我们只需要去和她谈恋爱、结婚就行了。简单明了，如果婚介给我们的人选不符合要求，我们就会抛出异常。整个过程不再由我自己控制，而是有婚介这样一个类似容器的机构来控制。Spring所倡导的开发方式就是如此，所有的类都会在spring容器中登记，告诉spring你是个什么东西，你需要什么东西，然后spring会在系统运行到适当的时候，把你要的东西主动给你，同时也把你交给其他需要你的东西。所有的类的创建、销毁都由 spring来控制，也就是说控制对象生存周期的不再是引用它的对象，而是spring。对于某个具体的对象而言，以前是它控制其他对象，现在是所有对象都被spring控制，所以这叫控制反转。
 
-#### 2.2、DI(依赖注入)
+### 0、构造器注入
 
-　　IoC的一个重点是在系统运行中，**动态的向某个对象提供它所需要的其他对象。**这一点是通过DI（Dependency Injection，依赖注入）来实现的。比如对象A需要操作数据库，以前我们总是要在A中自己编写代码来获得一个Connection对象，有了 spring我们就只需要告诉spring，A中需要一个Connection，至于这个Connection怎么构造，何时构造，A不需要知道。在系统运行时，spring会在适当的时候制造一个Connection，然后像打针一样，注射到A当中，这样就完成了对各个对象之间关系的控制。A需要依赖 Connection才能正常运行，而这个Connection是由spring注入到A中的，依赖注入的名字就这么来的。那么DI是如何实现的呢？ Java 1.3之后一个重要特征是反射（reflection），它允许程序在运行的时候动态的生成对象、执行对象的方法、改变对象的属性，spring就是通过反射来实现注入的。
+我们在之前的案例已经讲过了
 
-理解了IoC和DI的概念后，一切都将变得简单明了，剩下的工作只是在spring的框架中堆积木而已。
 
-### 作者理解
 
-我对IoC(控制反转)和DI(依赖注入)的理解
-　　在平时的java应用开发中，我们要实现某一个功能或者说是完成某个业务逻辑时至少需要两个或以上的对象来协作完成，在没有使用Spring的时候，每个对象在需要使用他的合作对象时，自己均要使用像new object() 这样的语法来将合作对象创建出来，这个合作对象是由自己主动创建出来的，创建合作对象的主动权在自己手上，自己需要哪个合作对象，就主动去创建，创建合作对象的主动权和创建时机是由自己把控的，而这样就会使得对象间的耦合度高了，A对象需要使用合作对象B来共同完成一件事，A要使用B，那么A就对B产生了依赖，也就是A和B之间存在一种耦合关系，并且是紧密耦合在一起，而使用了Spring之后就不一样了，创建合作对象B的工作是由Spring来做的，Spring创建好B对象，然后存储到一个容器里面，当A对象需要使用B对象时，Spring就从存放对象的那个容器里面取出A要使用的那个B对象，然后交给A对象使用，至于Spring是如何创建那个对象，以及什么时候创建好对象的，A对象不需要关心这些细节问题(你是什么时候生的，怎么生出来的我可不关心，能帮我干活就行)，A得到Spring给我们的对象之后，两个人一起协作完成要完成的工作即可。
+**要求被注入的属性 , ==必须有set方法== , set方法的方法名由set + 属性首字母大写 , 如果属性是boolean类型 , 没有set方法 , 是 is **
 
-所以控制反转IoC(Inversion of Control)是说创建对象的控制权进行转移**，以前创建对象的主动权和创建时机是由自己把控的，而现在这种权力转移到第三方，比如转移交给了IoC容器，它就是一个专门用来创建对象的工厂，你要什么对象，它就给你什么对象，有了 IoC容器，依赖关系就变了，原先的依赖关系就没了，它们都依赖IoC容器了，通过IoC容器来建立它们之间的关系。**
+### 1、常量注入
 
-这是我对Spring的IoC(控制反转)的理解。DI(依赖注入)其实就是IOC的另外一种说法，DI是由Martin Fowler 在2004年初的一篇论文中首次提出的。他总结：控制的什么被反转了？就是：获得依赖对象的方式反转了。
+```xml
+ <bean id="student" class="com.kuang.pojo.Student">
+     <property name="name" value="小明"/>
+ </bean>
+```
 
-## springMVC
+### 2、Bean注入 
 
+注意点：这里的值是一个引用，ref
 
+```xml
+ <bean id="addr" class="com.kuang.pojo.Address">
+     <property name="address" value="重庆"/>
+ </bean>
+ 
+ <bean id="student" class="com.kuang.pojo.Student">
+     <property name="name" value="小明"/>
+     <property name="address" ref="addr"/>
+ </bean>
+```
+
+### 3、数组注入
+
+```xml
+ <bean id="student" class="com.kuang.pojo.Student">
+     <property name="name" value="小明"/>
+     <property name="address" ref="addr"/>
+     <property name="books">
+         <array>
+             <value>西游记</value>
+             <value>红楼梦</value>
+             <value>水浒传</value>
+         </array>
+     </property>
+ </bean>
+```
+
+### 4、List注入
+
+```
+ <property name="hobbys">
+     <list>
+         <value>听歌</value>
+         <value>看电影</value>
+         <value>爬山</value>
+     </list>
+ </property>
+```
+
+### 5、Map注入
+
+```
+ <property name="card">
+     <map>
+         <entry key="中国邮政" value="456456456465456"/>
+         <entry key="建设" value="1456682255511"/>
+     </map>
+ </property>
+```
+
+### ==6、set注入==
+
+```
+ <property name="games">
+     <set>
+         <value>LOL</value>
+         <value>BOB</value>
+         <value>COC</value>
+     </set>
+ </property>
+```
+
+### 7、Null注入
+
+```
+ <property name="wife"><null/></property>
+```
+
+### 8、Properties注入
+
+```
+ <property name="info">
+     <props>
+         <prop key="学号">20190604</prop>
+         <prop key="性别">男</prop>
+         <prop key="姓名">小明</prop>
+     </props>
+ </property>
+```
+
+## Bean的作用域
+
+在Spring中，那些组成应用程序的主体及由Spring IoC容器所管理的对象，被称之为bean。简单地讲，==bean就是由IoC容器初始化、装配及管理的对象 .==
+
+<img src="java学习.assets/image-20210317104950362.png" alt="image-20210317104950362" style="zoom:150%;" />
+
+几种作用域中，==request、session作用域仅在基于web的应用中使用（不必关心你所采用的是什么web应用框架），只能用在基于web的Spring ApplicationContext环境。==
+
+#### Singleton
+
+当一个bean的作用域为Singleton，那么Spring IoC容器中==只会存在一个共享的bean实例==，并且所有对bean的请求，只要id与该bean定义相匹配，则只会返回bean的同一实例。Singleton是单例类型，就是在创建起容器时就同时自动创建了一个bean的对象，不管你是否使用，他都存在了，每次获取到的对象都是同一个对象。注意，Singleton作用域是Spring中的缺省作用域。要在XML中将bean定义成singleton，可以这样配置：
+
+```
+ <bean id="ServiceImpl" class="cn.csdn.service.ServiceImpl" scope="singleton">
+```
+
+测试：
+
+```
+ @Test
+ public void test03(){
+     ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+     User user = (User) context.getBean("user");
+     User user2 = (User) context.getBean("user");
+     System.out.println(user==user2);
+ }
+```
+
+#### Prototype
+
+==当一个bean的作用域为Prototype，表示一个bean定义对应多个对象实例==。Prototype作用域的bean会导致在每次对该bean请求（将其注入到另一个bean中，或者以程序的方式调用容器的getBean()方法）时都会创建一个新的bean实例。Prototype是原型类型，它在我们创建容器的时候并没有实例化，而是当我们获取bean的时候才会去创建一个对象，而且我们每次获取到的对象都不是同一个对象。根据经验，对有状态的bean应该使用prototype作用域，而对无状态的bean则应该使用singleton作用域。在XML中将bean定义成prototype，可以这样配置：
+
+```
+ <bean id="account" class="com.foo.DefaultAccount" scope="prototype"/>  
+  或者
+ <bean id="account" class="com.foo.DefaultAccount" singleton="false"/>
+```
+
+#### Request
+
+当一个bean的作用域为Request，表示在一次HTTP请求中，一个bean定义对应一个实例；即==每个HTTP请求都会有各自的bean实例，==它们依据某个bean定义创建而成。该作用域仅在基于web的Spring ApplicationContext情形下有效。考虑下面bean定义：
+
+```
+ <bean id="loginAction" class=cn.csdn.LoginAction" scope="request"/>
+```
+
+针对每次HTTP请求，Spring容器会根据loginAction bean的定义创建一个全新的LoginAction bean实例，且该loginAction bean实例仅在当前HTTP request内有效，因此可以根据需要放心的更改所建实例的内部状态，而其他请求中根据loginAction bean定义创建的实例，将不会看到这些特定于某个请求的状态变化。当处理请求结束，request作用域的bean实例将被销毁。
+
+#### Session
+
+当一个bean的作用域为Session，表示在一个HTTP Session中，==一个bean定义对应一个实例==。该作用域仅在基于web的Spring ApplicationContext情形下有效。考虑下面bean定义：
+
+```
+ <bean id="userPreferences" class="com.foo.UserPreferences" scope="session"/>
+```
+
+针对某个HTTP Session，Spring容器会根据userPreferences bean定义创建一个全新的userPreferences bean实例，且该userPreferences bean仅在当前HTTP Session内有效。与request作用域一样，可以根据需要放心的更改所创建实例的内部状态，而别的HTTP Session中根据userPreferences创建的实例，将不会看到这些特定于某个HTTP Session的状态变化。当HTTP Session最终被废弃的时候，在该HTTP Session作用域内的bean也会被废弃掉。
+
+
+
+## ==自动装配==
+
+- 自动装配是使用spring满足bean依赖的一种方法
+- spring会在应用上下文中为某个bean寻找其依赖的bean。
+
+Spring中bean有三种装配机制，分别是：
+
+1. 在xml中显式配置；
+2. 在java中显式配置；
+3. 隐式的bean发现机制和自动装配。
+
+这里我们主要讲第三种：自动化的装配bean。
+
+Spring的自动装配需要从两个角度来实现，或者说是两个操作：
+
+1. 组件扫描(component scanning)：spring会自动发现应用上下文中所创建的bean；
+2. 自动装配(autowiring)：spring自动满足bean之间的依赖，也就是我们说的IoC/DI；
+
+组件扫描和自动装配组合发挥巨大威力，使得显示的配置降低到最少。
+
+**推荐不使用自动装配xml配置 , 而使用注解 .**
+
+环境
+
+```java
+public class User {
+   private Cat cat;
+   private Dog dog;
+   private String str;
+}
+```
+
+手动写法
+
+```xml
+<bean id="dog" class="com.kuang.pojo.Dog"/>
+   <bean id="cat" class="com.kuang.pojo.Cat"/>
+
+   <bean id="user" class="com.kuang.pojo.User">
+       <property name="cat" ref="cat"/>
+       <property name="dog" ref="dog"/>
+       <property name="str" value="qinjiang"/>
+   </bean>
+```
+
+### xml显式配置
+
+#### autowire byName (按名称自动装配)
+
+```xml
+<bean id="user" class="com.kuang.pojo.User" autowire="byName">
+   <property name="str" value="qinjiang"/>
+</bean>
+```
+
+**小结：**
+
+当一个bean节点带有 autowire byName的属性时。
+
+1. **将查找其类中所有的set方法名，例如setCat，获得将set去掉并且首字母小写的字符串，即cat。**
+2. 去spring容器中寻找是否有**此字符串名称id的对象**。
+3. 如果有，就取出注入；如果没有，就报空指针异常。
+
+
+
+#### autowire byType (按类型自动装配)
+
+使用autowire byType首先需要保证：同一类型的对象，在spring容器中唯一。如果不唯一，会报不唯一的异常。
+
+错误示范：
+
+```xml
+<bean id="dog" class="com.kuang.pojo.Dog"/>
+<bean id="cat" class="com.kuang.pojo.Cat"/>
+<bean id="cat2" class="com.kuang.pojo.Cat"/>
+
+<bean id="user" class="com.kuang.pojo.User" autowire="byType">
+   <property name="str" value="qinjiang"/>
+</bean>
+```
+
+### 注解自动装配
+
+1、在spring==配置文件中引入context文件头==
+
+```
+xmlns:context="http://www.springframework.org/schema/context"
+
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+```
+
+2、==开启属性注解支持！==
+
+```xml
+<context:annotation-config/>
+```
+
+
+
+#### ==@Autowired==
+
+- @Autowired是按类型自动转配的，不支持id匹配。
+- 需要导入 spring-aop的包！
+
+- ==直接在属性上使用==即可!**也可以在set方式上使用!**
+- 使用Autowired我们可以不用编写Set方法了，前提是你这个自动装配的属性在IOC(Spring)容器中存在，且符合名字byname!
+
+#### @Qualifier
+
+- @Autowired是根据**类型自动装配的，加上@Qualifier则可以根据byName的方式自动装配**
+- @Qualifier**不能单独使用。**
+- 如果@Autowired自动装配的环境比较复杂，自动装配无法通过一个注解【@Autowired】完成的时候、我们可以使用@Qualifier(value="xxx")去配置@Autowired的使用，指定一个唯一的bean对象注入!
+
+测试实验步骤：
+
+1、配置文件修改内容，保证类型存在对象。且名字不为类的默认名字！
+
+```xml
+<bean id="dog1" class="com.kuang.pojo.Dog"/>
+<bean id="dog2" class="com.kuang.pojo.Dog"/>
+<bean id="cat1" class="com.kuang.pojo.Cat"/>
+<bean id="cat2" class="com.kuang.pojo.Cat"/>
+```
+
+2、没有加Qualifier测试，直接报错
+
+3、在属性上添加Qualifier注解
+
+```java
+@Autowired
+@Qualifier(value = "cat2")
+private Cat cat;
+@Autowired
+@Qualifier(value = "dog2")
+private Dog dog;
+```
+
+### java显式装配
+
+#### @Resource
+
+(java原生注解，不会有行号的跳转的标志)
+
+- @Resource如有指定的name属性，先按该属性进行byName方式查找装配；
+- 其次再进行默认的byName方式进行装配；
+- 如果以上都不成功，则按byType的方式自动装配。
+- 都不成功，则报异常。
+
+### 小结
+
+==@Autowired与@Resource异同：==
+
+1、@Autowired与@Resource都可以用来装配bean。都可以写在字段上，或写在setter方法上。
+
+2、@Autowired默认按类型装配（属于spring规范），默认情况下必须要求依赖对象必须存在，如果要允许null 值，可以设置它的required属性为false，如：@Autowired(required=false) ，==如果我们想使用名称装配可以结合@Qualifier注解进行使用==
+
+3、@Resource（属于J2EE复返），默认按照名称进行装配，名称可以通过name属性进行指定。如果没有指定name属性，当注解写在字段上时，默认取字段名进行按照名称查找，如果注解写在setter方法上默认取属性名进行装配。当找不到与名称匹配的bean时才按照类型进行装配。但是需要注意的是，如果name属性一旦指定，就只会按照名称进行装配。
+
+它们的作用相同都是用注解方式注入对象，==但执行顺序不同==。==@Autowired先byType，@Resource先byName。==
+
+
+
+## 使用注解开发
+
+![image-20210317153756278](java学习.assets/image-20210317153756278.png)
+
+### 使用注解前的操作
+
+1、在spring==配置文件中引入context文件头==
+
+```
+xmlns:context="http://www.springframework.org/schema/context"
+
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+```
+
+2、==开启属性注解支持！==
+
+```xml
+<context:annotation-config/>
+```
+
+
+
+我们之前都是使用 bean 的标签进行bean注入，但是实际开发中，我们一般都会使用注解！
+
+**（如果简单可以用注解，复杂就用配置文件）**
+
+3、配置扫描哪些包下的注解
+
+```xml
+<!--指定注解扫描包-->
+<context:component-scan base-package="com.kuang.pojo"/>
+```
+
+4、在指定包下编写类，增加注解
+
+```java
+@Component("user")
+// 相当于配置文件中 <bean id="user" class="当前注解的类"/>
+public class User {
+   public String name = "秦疆";
+}
+```
+
+### 属性注入
+
+使用注解注入属性
+
+1、可以不用提供set方法，直接在直接名上添加@value("值")
+
+```java
+@Component("user")
+// 相当于配置文件中 <bean id="user" class="当前注解的类"/>
+public class User {
+   @Value("秦疆")
+   // 相当于配置文件中 <property name="name" value="秦疆"/>
+   public String name;
+}
+```
+
+2、如果提供了set方法，在set方法上添加@value("值");
+
+```java
+@Component("user")
+public class User {
+
+   public String name;
+
+   @Value("秦疆")
+   public void setName(String name) {
+       this.name = name;
+  }
+}
+```
+
+### 衍生注解
+
+我们这些注解，就是替代了在配置文件当中配置步骤而已！更加的方便快捷！
+
+**@Component三个衍生注解**
+
+为了更好的进行分层，Spring可以使用其它三个注解，功能一样，目前使用哪一个功能都一样。
+
+- @Controller：web层
+- @Service：service层
+- @Repository：dao层
+
+==写上这些注解，就相当于将这个类交给Spring管理装配了==！
+
+### 自动装配注解
+
+在Bean的自动装配已经讲过了，可以回顾！
+
+### 作用域
+
+@scope
+
+- singleton：默认的，Spring会采用单例模式创建这个对象。关闭工厂 ，所有的对象都会销毁。
+- prototype：多例模式。关闭工厂 ，所有的对象不会销毁。内部的垃圾回收机制会回收
+
+```java
+@Controller("user")
+@Scope("prototype")
+public class User {
+   @Value("秦疆")
+   public String name;
+}
+```
+
+
+
+### 小结
+
+**XML与注解比较**
+
+- XML可以适用任何场景 ，结构清晰，维护方便
+- 注解不是自己提供的类使用不了，开发简单方便
+
+**xml与注解整合开发** ：推荐最佳实践
+
+- ==xml管理Bean==
+- ==注解完成属性注入==(**类上面的注解不用写了，放在xml中配置bean。java中只写属性注入的注解**）
+- ==使用过程中， 可以不用扫描，扫描是为了类上的注解==
+
+```xml
+<context:annotation-config/>  
+```
+
+作用：
+
+- 进行注解驱动注册，从而使注解生效
+- 用于激活那些已经在spring容器里注册过的bean上面的注解，也就是显示的向Spring注册
+- ==如果不扫描包，就需要手动配置bean==
+- ==如果不加注解驱动，则注入的值为null！==
+
+
+
+## 基于Java类进行配置
+
+**==（纯java，不需要xml）==**
+
+JavaConfig 原来是 Spring 的一个子项目，它通过 Java 类的方式提供 Bean 的定义信息，在 Spring4 的版本， JavaConfig 已正式成为 Spring4 的核心功能 。
+
+测试：
+
+1、编写一个实体类，Dog
+
+```java
+@Component  //将这个类标注为Spring的一个组件，放到容器中！
+public class Dog {
+   public String name = "dog";
+}
+```
+
+2、新建一个config配置包，编写一个==MyConfig配置类==
+
+```java
+@Configuration  //代表这是一个配置类
+@ComponentScan( "com.kuang.pojo")
+public class MyConfig {
+
+   @Bean //通过方法注册一个bean，
+    	//这里的返回值就Bean的类型，
+    	//方法名就是bean的id！
+   public Dog dog(){
+       return new Dog();//返回注入bean的对象
+  }
+
+}
+```
+
+3、测试
+
+```java
+@Test
+public void test2(){
+   ApplicationContext applicationContext =
+           new AnnotationConfigApplicationContext(MyConfig.class);
+   Dog dog = (Dog) applicationContext.getBean("dog");
+   System.out.println(dog.name);
+}
+```
+
+4、成功输出结果！
+
+**导入其他配置如何做呢？**
+
+1、我们再编写一个配置类！
+
+```java
+@Configuration  //代表这是一个配置类
+public class MyConfig2 {
+}
+```
+
+2、在之前的配置类中我们来选择导入这个配置类
+
+```java
+@Configuration
+@Import(MyConfig2.class)  //导入合并其他配置类，类似于配置文件中的 inculde 标签
+public class MyConfig {
+
+   @Bean
+   public Dog dog(){
+       return new Dog();
+  }
+
+}
+```
+
+关于这种Java类的配置方式，**我们在之后的SpringBoot 和 SpringCloud中还会大量看到**，我们需要知道这些注解的作用即可！
+
+
+
+
+
+# ==springMVC***==
+
+狂神视频讲解（==重点听理解==）
+
+https://www.bilibili.com/video/BV1aE41167Tu?from=search&seid=6751977772749991455
+
+笔记
+
+https://www.cnblogs.com/yaolicheng/p/13689710.html
+
+json
+
+https://mp.weixin.qq.com/s/RAqRKZJqsJ78HRrJg71R1g
+
+
+
+## ssm框架笔记
+
+https://mp.weixin.qq.com/mp/homepage?__biz=Mzg2NTAzMTExNg==&hid=3&sn=456dc4d66f0726730757e319ffdaa23e&scene=18&devicetype=android-30&version=2800015d&lang=zh_CN&nettype=cmnet&ascene=7&session_us=gh_1dd456f1d44d&pass_ticket=%2FO7iJEWSWIShi1fEkp3cGadyVgOtSEGCEbbnPEbRqodacv7QVcHSSJMPIJei5OMG&wx_header=1
+
+## ssm都是什么
+
+
+
+### Spring
+
+ Spring的用途==不仅限于服务器端的开发==。**从简单性、可测试性和松耦合的角度而言**，==任何 Java 应用都可以从 Spring 中受益==。 简单来说， **==Spring 是一个轻量级的控制反转( IoC)和面向切面( AOP )的容器框架。==**
+
+Spring **控制反转和依赖注入 创建对象交由容器管理，达到了解耦的作用**
+
+
+
+### SpringMVC
+
+Spring MVC 属于 SpringFrameWork 的后续产品，已经融合在 Spring Web Flow 里面。 **Spring MVC  分离了 控制器、模型 对象、分派器以及处理程序对象的角色，**这种分离让它们更容易进行定制。**Spring MVC ==控制层==，想当与 Struts的作用**
+
+
+
+### MyBatis
+
+MyBatis  本是 apache的一个开源项目 iBatis。 MyBatis 是一个基于 Java 的 持久层框架。 iBATIS 提供的 持久层框架包括 SQL Maps 和 Data Access Objects ( DAO ) MyBatis  **消除了几乎所有的 JDBC 代码和参数的手工设置以及结果集的检索**。 MyBatis  使用简单的  XML 或注解用于配置和原始映射，将接口和  Java  的 POJOs ( Plain Old Java Objects ，普通的  Java 对象)映射成数据库中的记录。
+
+mybatis 主要用来操作数据库（数据库的增删改查）
+
+
+
+
+## springMVC静态资源过滤
+
+- webapp 文件夹下有 css、img、js 等存放静态资源的文件夹。
+- 如果在 jsp 中**直接引入静态资源会被 DispathcerServlet 拦截**，从而不能被使用这些静态资源。
+- 基于以上原因，我们需要配置 静态资源路径的过滤。
+
+```xml
+<!-- 2.静态资源默认servlet配置-->
+<mvc:default-servlet-handler/>
+```
+
+
+
+## ==AJAX(ing）==
+
+https://www.bilibili.com/video/BV1aE41167Tu?p=24
+
+## 注解的作用
+
+@Qualifier注解的用处：当一个接口有多个实现的时候，为了指名具体调用哪个类的实现
+
+
+
+@Param( “bookName") String name : 防止传过来的参数与需要用的参数不一样
+
+## 关联上下文
+
+1
+
+![image-20210316101508552](java学习.assets/image-20210316101508552.png)
+
+2
+
+![image-20210316101255811](java学习.assets/image-20210316101255811.png)
+
+3
+
+![image-20210316101702894](java学习.assets/image-20210316101702894.png)
+
+4
+
+![image-20210316101900549](java学习.assets/image-20210316101900549.png)
+
+
+
+### spring-dao理解？
+
+
+
+## fastjson
+
+
+
+
+
+#  SpringBoot
+
+## ==SpringBoot与SpringMVC的关系（清晰，简单）==
+
+https://blog.csdn.net/u014209205/article/details/84640446
+
+# 开发网站注意的地方
+
+## 后端注意点
+
+1.每实现一个小功能，就测试一下
+
+
+
+## 前端注意点
+
+1.如何让用户必须添加完所有表单才能提交 ：
+
+添加required字段
+
+```html
+<input type="text" name="bookName" required>
+```
+
+2.name属性必须与pojo里面的字段一样
+
+
+
+3.制作修改的页面时：要求改前必须有值中怎么办？
+
+​	使用value字段（==默认值属性==），配合el表达式获取后台的值
+
+4.使用表单中hidden属性，用来记录数据库中的id
+
+
+
+## 数据库注意点
+
+### 数据库事务 最全详解-----
+
+https://www.cnblogs.com/xdp-gacl/p/3984001.html
+
+# Maven
+
+## 如何改所有的maven设置
+
+![image-20210313184905773](java学习.assets/image-20210313184905773.png)
+
+
+
+## 静态资源过滤
+
+在使用Maven构建项目的时候，==会默认过滤掉静态资源，所以需要手动来配置。==
+在pom.xml中加入如下代码==可以过滤java和resources文件夹里面的.properties和.xml文件。==
+
+```xml
+<build>
+    <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+            </includes>
+            <filtering>false</filtering>
+        </resource>
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+            </includes>
+            <filtering>false</filtering>
+        </resource>
+    </resources>
+</build>
+```
+
+
+directory：指定资源所在的目录，目录的路径是相对于pom.xml文件的
+includes：指定要包含哪些文件
+filtering：false表示不过滤，true表示过滤
 
 # JVM（调优暂时停更）
 
@@ -7427,7 +8692,7 @@ Java Virtual Machine Stacks (Java虚拟机栈)。
 
 ​		不是。划分大了可以更多次递归调用，但是运行线程数目变少
 
-3.方法内的局部变量是否线程安全?
+3.==方法内的局部变量是否线程安全?==
 
 > ​		共享变量：（比如说静态变量）不安全
 >
@@ -7435,7 +8700,7 @@ Java Virtual Machine Stacks (Java虚拟机栈)。
 >
 >  **如果方法内局部变量没有逃离方法的作用访问，它是线程安全的**
 >
-> **·如果是局部变量引用了对象，并逃离方法的作用方法，需要考虑线程安全**
+> **如果是局部变量引用了对象，并逃离方法的作用方法，需要考虑线程安全**
 >
 > ​	![image-20210306152257605](java学习.assets/image-20210306152257605.png)
 
@@ -7681,7 +8946,7 @@ https://www.bilibili.com/video/BV1yE411Z7AP?p=38
 
 
 
-## gc垃圾回收与jvm调优**
+## ==gc垃圾回收==与jvm调优**
 
 视频讲解
 
@@ -7886,7 +9151,7 @@ https://www.bilibili.com/video/BV1yE411Z7AP?p=84
 
 
 
-## java内存模型**？
+## ==java内存模型**？==
 
 https://www.bilibili.com/video/BV1yE411Z7AP?p=165
 
@@ -8617,17 +9882,389 @@ https://www.bilibili.com/video/BV1z54y1C7Cw
 
 
 
-# Redis
+# Redis(==详细见pdf==)
+
+只学习了基础部分
+
+黑马讲解
 
 https://www.bilibili.com/video/BV1CJ411m7Gc?p=4
 
-端口号，最大连接数之类的东西要写入配置文件 中，
+## 命名规则
 
-如何读取配置文件
+![image-20210313154333284](java学习.assets/image-20210313154333284.png)
+
+## 数据类型对应设计思路
+
+![image-20210313154651154](java学习.assets/image-20210313154651154.png)
+
+## Redis命令
+
+### 1.对value操作的命令
+
+-  ==exists==(key)：确认一个key是否存在
+
+-  ==del==(key)：删除一个key
+
+-  ==type==(key)：返回值的类型
+
+-  keys(pattern)：返回满足给定pattern的所有key
+
+-  randomkey：随机返回key空间的一个key
+
+-  rename(oldname, newname)：将key由oldname重命名为newname，若newname存在则删除newname表示的key
+
+-  dbsize：返回当前数据库中key的数目
+
+-  ==expire==：设定一个key的活动时间（s）
+
+-  ttl：==获得一个key的活动时间==
+
+-  select(index)：按索引查询
+
+-  move(key, dbindex)：将当前数据库中的key转移到有dbindex索引的数据库
+
+-  flushdb：删除==当前选择数据库==中的所有key
+
+-  flushall：删除==所有数据库==中的所有key
+
+### 2.对String操作的命令==(-ex存活时间、-nx是否存在)==
+
+-  set(key, value)：给数据库中名称为key的string赋予值value
+
+-  get(key)：返回数据库中名称为key的string的value
+
+-  getset(key, value)：给名称为key的string赋予上一次的value
+
+-  mget(key1, key2,…, key N)：返回库中多个string（它们的名称为key1，key2…）的value
+
+-  set==nx==(key, value)：如果==不存在==名称为key的string，则向库中添加string，名称为key，值为value
+
+-  set==ex==(key, time, value)：向库中添加string（名称为key，值为value）同时，==设定过期时间time==
+
+-  mset(key1, value1, key2, value2,…key N, value N)：==同时给多个string赋值==，名称为key i的string赋值value i
+
+-  msetnx(key1, value1, key2, value2,…key N, value N)：如果所有名称为key i的string都不存在，则向库中添加string，名称key i赋值为value i
+
+-  ==incr(key)==：名称为key的string增1操作
+
+-  ==incrby(key, integer)==：名称为key的string增加integer
+
+-  ==decr==(key)：名称为key的string减1操作
+
+-  ==decrby==(key, integer)：名称为key的string减少integer
+
+-  ==append==(key, value)：名称为key的string的值附加value
+
+-  substr(key, start, end)：返回名称为key的string的value的子串
+
+### 3.对List操作的命令
+
+-  ==rpush==(key, value)：在名称为key的list尾添加一个值为value的元素
+
+-  ==lpush==(key, value)：在名称为key的list头添加一个值为value的 元素
+
+-  llen(key)：==返回==名称为key的list的==长度==
+
+-  ==lrange==(key, start, end)：==返回==名称为key的list中start至end==之间的元素==（下标从0开始，下同）
+
+-  ltrim(key, start, end)：截取名称为key的list，保留start至end之间的元素
+
+-  lindex(key, index)：返回名称为key的list中index位置的元素
+
+-  lset(key, index, value)：给名称为key的list中index位置的元素赋值为value
+
+-  lrem(key, count, value)：删除count个名称为key的list中值为value的元素。count为0，删除所有值为value的元素，count>0      从头至尾删除count个值为value的元素，count<0从尾到头删除|count|个值为value的元素。
+
+-  lpop(key)：返回并删除名称为key的list中的首元素
+
+-  rpop(key)：返回并删除名称为key的list中的尾元素
+
+-  blpop(key1, key2,… key N, timeout)：lpop 命令的block版本。即当timeout为0时，若遇到名称为key i的list不存在或该list为空，则命令结束。如果 timeout>0，则遇到上述情况时，等待timeout秒，如果问题没有解决，则对key i+1开始的list执行pop操作。
+
+-  brpop(key1, key2,… key N, timeout)：rpop的block版本。参考上一命令。
+
+-  rpoplpush(srckey, dstkey)：返回并删除名称为srckey的list的尾元素，并将该元素添加到名称为dstkey的list的头部
+
+### 4.对==Set==操作的命令==(交、并、差集)==
+
+-  ==sadd==(key, member)：向名称为key的set中添加元素member
+
+-  ==srem==(key, member) ：删除名称为key的set中的元素member
+
+-  spop(key) ：随机返回并删除名称为key的set中一个元素
+
+-  smove(srckey, dstkey, member) ：将member元素从名称为srckey的集合移到名称为dstkey的集合
+
+-  scard(key) ：返回名称为key的set的基数
+
+-  sismember(key, member) ：测试member是否是名称为key的set的元素
+
+-  sinter(key1, key2,…key N) ：求交集
+
+-  sinterstore(dstkey, key1, key2,…key N) ：求==交集==并将交集保存到dstkey的集合
+
+-  sunion(key1, key2,…key N) ：求并集
+
+-  sunionstore(dstkey, key1, key2,…key N) ：求==并集==并将并集保存到dstkey的集合
+
+-  sdiff(key1, key2,…key N) ：求差集
+
+-  sdiffstore(dstkey, key1, key2,…key N) ：求==差集==并将差集保存到dstkey的集合
+
+-  smembers(key) ：返回名称为key的set的所有元素
+
+-  srandmember(key) ：==随机返回名称==为key的set的一个元素
+
+### 5.对zset（==sorted set==）操作的命令
+
+-  ==zadd==(key, score, member)：向名称为key的zset中添加元素member，==score用于排序==。如果该元素已经存在，则根据score更新该元素的顺序。
+
+-  ==zrem==(key, member) ：删除名称为key的zset中的元素member
+
+-  ==zincrby==(key, increment, member) ：如果在名称为key的zset中已经存在元素member，则该元素的score增加increment；否则向集合中添加该元素，其score的值为increment
+
+-  ==zrank==(key, member) ：==返回名称==为key的zset（元素已按score从小到大排序）中member元素的rank（即index，从0开始），若没有member元素，返回“nil”
+
+-  zrevrank(key, member) ：返回名称为key的zset（元素已按score从大到小排序）中member元素的rank（即index，从0开始），若没有member元素，返回“nil”
+
+-  zrange(key, start, end)：返回名称为key的zset（元素已按score从小到大排序）中的index从start到end的所有元素
+
+-  zrevrange(key, start, end)：返回名称为key的zset（元素已按score从大到小排序）中的index从start到end的所有元素
+
+-  zrangebyscore(key, min, max)：返回名称为key的zset中score >= min且score <= max的所有元素
+
+-  zcard(key)：返回名称为key的zset的基数
+
+-  ==zscore==(key, element)：==返回名称为key==的zset中元素element的score
+
+-  ==zremrangebyrank==(key, min, max)：==删除名称==为key的zset中rank >= min且rank <= max的所有元素
+
+-  zremrangebyscore(key, min, max) ：删除名称为key的zset中score >= min且score <= max的所有元素
+
+-  zunionstore / zinterstore(dstkeyN, key1,…,keyN, WEIGHTS w1,…wN, AGGREGATE SUM|MIN|MAX)：对N个zset求并集和交集，并将最后的集合保存在dstkeyN中。对于集合中每一个元素的score，在进行AGGREGATE运算前，都要乘以对于的WEIGHT参数。如果没有提供WEIGHT，默认为1。默认的AGGREGATE是SUM，即结果集合中元素的score是所有集合对应元素进行 SUM运算的值，而MIN和MAX是指，结果集合中元素的score是所有集合对应元素中最小值和最大值。
+
+### 6.对Hash操作的命令
+
+-  ==hset==(key, field, value)：向名称为key的hash中添加元素field<—>value
+
+-  ==hget==(key, field)：返回名称为key的hash中field对应的value
+
+-  h==m==get(key, field1, …,field N)：返回名称为key的hash中field i对应的value
+
+-  h==m==set(key, field1, value1,…,field N, value N)：向名称为key的hash中添加元素field i<—>value i
+
+-  ==hincrby==(key, field, integer)：将名称为key的hash中field的value增加integer
+
+-  ==hexists==(key, field)：名称为key的hash中是否存在键为field的域
+
+-  hdel(key, field)：删除名称为key的hash中键为field的域
+
+-  ==hlen==(key)：返回名称为key的hash中元素个数
+
+-  hkeys(key)：返回名称为key的hash中所有键
+
+-  hvals(key)：返回名称为key的hash中所有键对应的value
+
+-  ==hgetall==(key)：返回名称为key的hash中所有的键（field）及其对应的value
+
+## 连接池获取连接
+
+```java
+public class JedisUtils {
+    private static JedisPool jp = null;
+    private static String host = null;
+    private static int port;
+    private static int maxTotal;
+    private static int maxIdle;
+
+    static {
+        //防止重复加载
+        ResourceBundle rb = ResourceBundle.getBundle("redis");
+        host = rb.getString("redis.host");
+        port = Integer.parseInt(rb.getString("redis.port"));
+        maxTotal = Integer.parseInt(rb.getString("redis.maxTotal"));
+        maxIdle = Integer.parseInt(rb.getString("redis.maxIdle"));
+        JedisPoolConfig jpc = new JedisPoolConfig();
+        jpc.setMaxTotal(maxTotal);
+        jpc.setMaxIdle(maxIdle);
+        jp = new JedisPool(jpc,host,port);
+    }
+
+    public static Jedis getJedis(){
+        return jp.getResource();
+    }
+    public static void main(String[] args){
+        JedisUtils.getJedis();
+    }
+}
+```
+
+```properties
+redis.host=127.0.0.1
+redis.port=6379
+redis.maxTotal=30
+redis.maxIdle=10
+```
+
+
 
 # 报错信息查看
 
 
+
+## spring解决乱码
+
+/*可以解决所有页面，==只有/不能解决页面乱码==
+
+```xml
+<!--encodingFilter-->
+<filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>
+        org.springframework.web.filter.CharacterEncodingFilter
+    </filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>utf-8</param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+
+
+
+## spring排错
+
+### 一、单元测试
+
+问题:bean不存在
+步骤:
+   1．查看这个bean注入是否成功!                     							ok
+
+2. Junit单元测试，看我们的代码是否能够查询出来结果!        	ok
+
+3. 问题，一定不在我们的底层，是spring出了问题!
+
+4. SpringMVC，整合的时候没调用到我们的service层的bean;
+
+   ​	4.1applicationcontext.xml没有注入bean
+
+   ​	4.2web.xml中，我们也绑定过配置文件! ，发现问题，我们配置的是Spring -mvc .xml，这里面确实没有 service bean,所以报错空指针
+
+   
+
+```java
+@Test
+public void test1(){
+    ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    BookService bookServiceImpl = (BookService) context.getBean("BookServiceImpl");
+    for (Books books : bookServiceImpl.queryAllBook()) {
+        System.out.println(books);
+
+    }
+}
+```
+
+
+
+### 二、
+
+
+
+## 解决Intellij IDEA部署==JavaWeb项目 404问题==
+
+
+
+今天朋友问了我一个问题，他的公司项目用idea启动tomcat是成功的，
+但是访问页面是404。一般来说，**==这个问题普遍都是打war包的时候配置有一定的问题导致的。==**
+![img](java学习.assets/5b5064060001af1e08090290.jpg)
+
+检查一下Project Structure的配置，首先是project：
+
+![img](java学习.assets/5b5064060001173524601462.jpg)
+
+Modules-Sources如下图：（==选择文件功能==）
+
+![img](java学习.assets/5b506407000197bd24741462.jpg)
+
+Modules-Paths中没什么需要特别修改的地方。
+
+Modules-Dependencis如下图：
+
+![img](java学习.assets/5b5064090001018224741456.jpg)
+
+Liraires如下图所示：
+
+![img](java学习.assets/5b50640a0001858e24721460.jpg)
+
+==Facets如下，路径一定不要配错==，不如一定404，如下图：
+
+![img](java学习.assets/5b50640b000153ff24681470.jpg)
+
+最后就是Artifacts:
+
+![img](java学习.assets/5b50640b0001a24324621442.jpg)
+
+项目到这就配置完了，有些路径一定要结合自己的项目来配置。
+
+接下来配置tomcat：
+
+![img](java学习.assets/5b50640d0001dbea21921466.jpg)
+
+![img](java学习.assets/5b50640e0001da5921901462.jpg)
+
+到此，启动项目即可。
+
+
+
+## 找不到XXX.xml文件
+
+
+
+### 一、maven资源过滤
+
+1.定义：就是让指定配置文件里面的引用maven属性的内容，能够获取到在pom文件中定义的maven属性的值。指定目录：也就就是指src/main/resources和src/test/resources文件下的所有文件，默认情况下，==这些文件会被复制到classpath下面，即target/classes下面。==
+
+添加以下代码
+
+```xml
+<build>
+   <resources>
+       <resource>
+           <directory>src/main/java</directory>
+           <includes>
+               <include>**/*.properties</include>
+               <include>**/*.xml</include>
+           </includes>
+           <filtering>false</filtering>
+       </resource>
+       <resource>
+           <directory>src/main/resources</directory>
+           <includes>
+               <include>**/*.properties</include>
+               <include>**/*.xml</include>
+           </includes>
+           <filtering>false</filtering>
+       </resource>
+   </resources>
+</build>
+```
+
+
+
+### 二、手动添加
+
+先添加标记
+
+![image-20210314200119569](java学习.assets/image-20210314200119569.png)
+
+文件结构添加目录classes
+
+![image-20210314195823089](java学习.assets/image-20210314195823089.png)
 
 ## 看一下cause by ......找原因
 
