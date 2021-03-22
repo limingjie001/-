@@ -1,10 +1,16 @@
-任务
+# 任务
 
-==工厂模式==
+juc、线程池
+
+==工====厂模式==
 
 搞懂springMVC（-Vue-SpringBoot-SpringCloud-Linux）
 
 
+
+LeetCode刷题特训营：带你10天从算法零基础到精通，左程云/马士兵详解各
+
+https://www.bilibili.com/video/BV18i4y1K7JK?spm_id_from=333.851.b_7265636f6d6d656e64.1
 
 ---
 
@@ -44,7 +50,7 @@ spring基础知识
 
 xshell
 
-## 复习
+# 复习
 
 JVM中juc、
 
@@ -1004,9 +1010,9 @@ public static void main(String[] args) throws Exception {
 
  Constructor:==构造方法==
 > 	* 创建对象：
-> 																
+> 																		
 > 		* T newInstance(Object... initargs)  
-> 																
+> 																		
 > 		（==即 constructor.newInstance("张三", 23);==  ）
 >
 > ​	* 如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法
@@ -5454,6 +5460,10 @@ LOCK-》同步代码块-》同步方法
 
 
 
+## juc
+
+
+
 # io/nio
 
 
@@ -7171,15 +7181,9 @@ HashMap是非线程安全的，只是用于单线程环境下，**多线程环�
 
 
 
-# Spring
+# Spring(完结)
 
-spring编程思想视频
 
-https://www.bilibili.com/video/BV1WE411d7Dv?p=2
-
-## 官方文档
-
-https://docs.spring.io/spring-boot/docs/2.4.3/reference/html/getting-started.html#getting-started-system-requirements
 
 ## ==AOP思想***==
 
@@ -7193,7 +7197,7 @@ https://mp.weixin.qq.com/s?__biz=Mzg2NTAzMTExNg==&mid=2247484138&idx=1&sn=9fb187
 
 ### 什么是AOP
 
-AOP（Aspect Oriented Programming）意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
+AOP（Aspect Oriented Programming）意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。==AOP是OOP的延续==，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 
 ![image-20210318160921941](java学习.assets/image-20210318160921941.png)
 
@@ -7227,8 +7231,9 @@ SpringAOP中，通过Advice定义横切逻辑，Spring中支持5种类型的Advi
 
 
 
-Aspectj切入点语法定义
-在使用spring框架配置AOP的时候，不管是通过XML配置文件还是注解的方式都需要定义pointcut”切入点”
+### Aspectj切入点语法定义
+
+在使用spring框架配置AOP的时候，不管是==通过XML配置文件还是注解的方式都需要定义pointcut”切入点==”
 例如定义切入点表达式execution (* com.sample.service.impl..*3*(..))
 execution()是最常用的切点函数，其语法如下所示:
 整个表达式可以分为五个部分:
@@ -7240,7 +7245,7 @@ execution()是最常用的切点函数，其语法如下所示:
 
 
 
-==【重点】使用AOP织入，需要导入一个依赖包！==
+**==【重点】使用AOP织入，需要导入一个依赖包！==**
 
 ```xml
 <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
@@ -7428,13 +7433,13 @@ public class MyTest {
 }
 ```
 
-#### 第三种方式
+#### ==第三种方式==
 
-**注解实现**
+==**注解实现==**
 
 第一步：编写一个注解实现的增强类
 
-```
+```java
 package com.kuang.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -7469,9 +7474,11 @@ public class AnnotationPointcut {
 
 第二步：在Spring配置文件中，注册bean，并增加支持注解的配置
 
-```
+```xml
 <!--第三种方式:注解实现-->
 <bean id="annotationPointcut" class="com.kuang.config.AnnotationPointcut"/>
+如果加上@Component在类上面，可以不用注册bean
+
 <aop:aspectj-autoproxy/>
 ```
 
@@ -7484,6 +7491,10 @@ aop:aspectj-autoproxy：说明
 ```
 
 
+
+执行顺序
+
+![image-20210322162100415](java学习.assets/image-20210322162100415.png)
 
 ## ==IOC思想**==
 
@@ -7552,7 +7563,7 @@ public void test(){
 
 
 
-![图片](java学习.assets/640)
+![image-20210322162604562](java学习.assets/image-20210322162604562.png)
 
 **IoC是Spring框架的核心内容**，使用多种方式完美的实现了IoC，可以使用XML配置，也可以使用注解，新版本的Spring也可以零配置实现IoC。
 
@@ -7660,7 +7671,7 @@ public class UserT {
 
 2、==beans.xml 有三种方式编写==
 
-​	2.1下标
+​	2.1==下标==
 
 ```xml
 <!-- 第一种根据index参数下标设置 -->
@@ -7772,7 +7783,7 @@ class是bean的全限定名=包名+类名
 
 
 
-### 0、构造器注入
+### ==0、构造器注入==
 
 我们在之前的案例已经讲过了
 
@@ -8013,7 +8024,7 @@ public class User {
 </bean>
 ```
 
-### 注解自动装配
+### ==注解自动装配==
 
 1、在spring==配置文件中引入context文件头==
 
@@ -8095,7 +8106,7 @@ private Dog dog;
 
 
 
-## 使用注解开发
+## ==使用注解开发==
 
 ![image-20210317153756278](java学习.assets/image-20210317153756278.png)
 
@@ -8122,14 +8133,14 @@ http://www.springframework.org/schema/context/spring-context.xsd
 
 **（如果简单可以用注解，复杂就用配置文件）**
 
-3、配置扫描哪些包下的注解
+3、==配置扫描哪些包下的注解==
 
 ```xml
 <!--指定注解扫描包-->
 <context:component-scan base-package="com.kuang.pojo"/>
 ```
 
-4、在指定包下编写类，增加注解
+4、==在指定包下编写类，增加注==解
 
 ```java
 @Component("user")
@@ -8309,7 +8320,216 @@ public class MyConfig {
 
 
 
+## Spring-Mybatis
 
+可以不需要mybatis配置文件
+
+**笔记**
+
+https://mp.weixin.qq.com/s?__biz=Mzg2NTAzMTExNg==&mid=2247484144&idx=1&sn=768f97da78a9ceae8321d101da3c480e&scene=19#wechat_redirect
+
+**视频**
+
+https://www.bilibili.com/video/BV1WE411d7Dv?p=25
+
+### 方式一：sqlSessionTemplate
+
+### 方式二：dao继承Support类
+
+dao继承Support类 , 直接利用 getSqlSession() 获得 , 然后直接注入SqlSessionFactory . 比起方式1 , **不需要管理SqlSessionTemplate** , 而且对事务的支持更加友好 . 可跟踪源码查看
+
+<img src="java学习.assets/image-20210322154027296.png" alt="image-20210322154027296" style="zoom:150%;" />
+
+测试：
+
+1、将我们上面写的UserDaoImpl修改一下
+
+```java
+public class UserDaoImpl extends SqlSessionDaoSupport implements UserMapper {
+   public List<User> selectUser() {
+       UserMapper mapper = getSqlSession().getMapper(UserMapper.class);
+       return mapper.selectUser();
+  }
+}
+```
+
+2、配置数据源、配置sqlSessionFactory
+
+```xml
+<!--配置数据源：数据源有非常多，可以使用第三方的，也可使使用Spring的-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    <!--配置SqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--关联Mybatis-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:com/lmj/dao/*.xml"/>
+    </bean>
+```
+
+3、测试
+
+```java
+@Test
+public void test2(){
+   ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+   UserMapper mapper = (UserMapper) context.getBean("userDao");
+   List<User> user = mapper.selectUser();
+   System.out.println(user);
+}
+```
+
+
+
+> 报错原因是因为我在mybatis里面这段代码没有删除导致spring和mybatis都扫描了一遍xml，就出错了。
+>
+> ```
+> <mappers>
+>         <mapper resource="cn/dao/WorkinggMapper.xml"/>
+> </mappers>
+> ```
+>
+> 这两段代码只要删一段就行，删spring里面的或者mybatis的都行
+>
+>     <!-- 配置SQL映射文件信息 -->
+>         <property name="mapperLocations">
+>             <list>
+>                 <value>classpath:cn/dao/**/*.xml</value>
+>             </list>
+>         </property>
+>          
+>         <!-- 或者是 -->
+>     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+>        <property name="dataSource" ref="dataSource"/>
+>        <!--关联Mybatis-->
+>        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+>        <property name="mapperLocations" value="classpath:com/kuang/dao/*.xml"/>
+>     </bean>
+>
+> 
+
+
+
+## 声明式事务
+
+**事务四个属性ACID**
+
+1. 原子性（atomicity）
+
+2. - 事务是原子性操作，由一系列动作组成，事务的原子性确保动作要么全部完成，要么完全不起作用
+
+3. 一致性（consistency）
+
+4. - 一旦所有事务动作完成，事务就要被提交。数据和资源处于一种满足业务规则的一致性状态中
+
+5. 隔离性（isolation）
+
+6. - 可能多个事务会同时处理相同的数据，因此每个事务都应该与其他事务隔离开来，防止数据损坏
+
+7. 持久性（durability）
+
+   
+
+8. - 事务一旦完成，无论系统发生什么错误，结果都不会受到影响。通常情况下，事务的结果被写到持久化存储器中
+
+**编程式事务管理**
+
+- 将事务管理代码嵌到业务方法中来控制事务的提交和回滚
+- 缺点：必须在每个事务操作==业务逻辑中包含额外的事务管理代码==
+
+==**声明式事务管理**==
+
+- 一般情况下比编程式事务好用。
+- 将事务管理代码从业务方法中分离出来，==以声明的方式来实现事务管理==。
+- 将==事务管理作为横切关注点==，通过aop方法模块化。Spring中通过==Spring AOP框架==支持声明式事务管理。
+
+**使用Spring管理事务，注意头文件的约束导入 : tx**
+
+```
+xmlns:tx="http://www.springframework.org/schema/tx"
+
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+```
+
+**事务管理器**
+
+- 无论使用Spring的哪种事务管理策略（编程式或者声明式）事务管理器都是必须的。
+- 就是 Spring的核心事务管理抽象，管理封装了一组独立于技术的方法。
+
+**JDBC事务**
+
+```xml
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+       <property name="dataSource" ref="dataSource" />
+</bean>
+```
+
+**配置好事务管理器后我们需要去配置事务的通知**
+
+```xml
+<!--配置事务通知-->
+<tx:advice id="txAdvice" transaction-manager="transactionManager">
+   <tx:attributes>
+       <!--配置哪些方法使用什么样的事务,配置事务的传播特性-->
+       <tx:method name="add" propagation="REQUIRED"/>
+       <tx:method name="delete" propagation="REQUIRED"/>
+       <tx:method name="update" propagation="REQUIRED"/>
+       <tx:method name="search*" propagation="REQUIRED"/>
+       <tx:method name="get" read-only="true"/>
+       <tx:method name="*" propagation="REQUIRED"/>
+   </tx:attributes>
+</tx:advice>
+```
+
+**spring事务传播特性：**
+
+事务传播行为就是多个事务方法相互调用时，事务如何在这些方法间传播。spring支持7种事务传播行为：
+
+- propagation_requierd：如果当前没有事务，就新建一个事务，如果已存在一个事务中，加入到这个事务中，这是最常见的选择。
+- propagation_supports：支持当前事务，如果没有当前事务，就以非事务方法执行。
+- propagation_mandatory：使用当前事务，如果没有当前事务，就抛出异常。
+- propagation_required_new：新建事务，如果当前存在事务，把当前事务挂起。
+- propagation_not_supported：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+- propagation_never：以非事务方式执行操作，如果当前事务存在则抛出异常。
+- propagation_nested：如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与propagation_required类似的操作
+
+Spring 默认的事务传播行为是 PROPAGATION_REQUIRED，它适合于绝大多数的情况。
+
+假设 ServiveX#methodX() 都工作在事务环境下（即都被 Spring 事务增强了），假设程序中存在如下的调用链：Service1#method1()->Service2#method2()->Service3#method3()，那么这 3 个服务类的 3 个方法通过 Spring 的事务传播机制都工作在同一个事务中。
+
+就好比，我们刚才的几个方法存在调用，所以会被放在一组事务当中！
+
+**配置AOP**
+
+导入aop的头文件！
+
+```xml
+<!--配置aop织入事务-->
+<aop:config>
+   <aop:pointcut id="txPointcut" expression="execution(* com.kuang.dao.*.*(..))"/>
+   <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+</aop:config>
+```
+
+**进行测试**
+
+删掉刚才插入的数据，再次测试！
+
+```java
+@Test
+public void test2(){
+   ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+   UserMapper mapper = (UserMapper) context.getBean("userDao");
+   List<User> user = mapper.selectUser();
+   System.out.println(user);
+}
+```
 
 # ==springMVC***==
 
@@ -10111,6 +10331,42 @@ redis.maxIdle=10
 
 # 报错信息查看
 
+classpath: 后面不要有空格
+
+
+
+## Error creating bean with name ‘sqlSessionFactory‘ defined in class path reso
+
+今天学习spring时，出现这个问题，网上查了很多，大家错误各自不同，我一个一个改了之后还是报这个错误，总结了一下大家的改错方案，我发现百分之八十都是spring配置文件有错误。
+于是根据总结的东西和大家改错的方案，阅读错误信息可知，是sqlSessionFactory创建时出现了问题。
+这时候请大家看 spring-dao.xml （每个人给配置文件的命名有所不同，不一定是这个名，反正就是spring的xml配置文件）后面的报错信息，根据报错信息找到你自己的问题
+
+我的报错信息是：
+
+ Error creating bean with name 'sqlSessionFactory' defined in class path resource [spring-dao.xml]: Initialization of bean failed; nested exception is org.springframework.beans.ConversionNotSupportedException: Failed to convert property value of type 'java.lang.String' to required type 'javax.sql.DataSource' for property 'dataSource'; nested exception is java.lang.IllegalStateException: Cannot convert value of type 'java.lang.String' to required type 'javax.sql.DataSource' for property 'dataSource': no matching editors or conversion strategy found
+1
+解决问题
+阅读可知，配置数据源时出现了问题，经过排查发现，创建SqlSessionFactory这里的ref我写成了value，改正后就不报错了
+
+下面说说我今天看到的一些其他朋友报这个错误然后他们错误的地方和我不一样的解决方案
+
+网上找的方案
+报错原因是因为我在mybatis里面这段代码没有删除导致spring和mybatis都扫描了一遍xml，就出错了。
+
+```
+<mappers>
+        <mapper resource="cn/dao/WorkinggMapper.xml"/>
+</mappers>
+```
+
+这两段代码只要删一段就行，删spring里面的或者mybatis的都行
+
+    <!-- 配置SQL映射文件信息 -->
+        <property name="mapperLocations">
+            <list>
+                <value>classpath:cn/dao/**/*.xml</value>
+            </list>
+        </property>
 
 
 ## spring解决乱码
@@ -10368,3 +10624,5 @@ ctrl+alt+l			格式化代码
 sout即可快速输出
 
 iter快速迭代
+
+**对象.for 	快速循环**			
