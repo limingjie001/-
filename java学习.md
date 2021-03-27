@@ -1,12 +1,32 @@
-# 任务
+# ==任务==
 
-juc、线程池
+继续复习线程池callable、常用方法，唤醒
+
+面试的：单例模式、排序算法、生产者和消费者、死锁
+
+
+
+juc、线程池、
+
+https://www.bilibili.com/video/BV1B7411L7tE?p=22&spm_id_from=pageDriver
 
 ==工====厂模式==
+
+
+
+==云计算、云计算、云计算==
 
 搞懂springMVC（-Vue-SpringBoot-SpringCloud-Linux）
 
 
+
+上午看视频，下午敲代码
+
+
+
+备战秋招
+
+https://www.bilibili.com/video/BV16C4y1t7Mi
 
 LeetCode刷题特训营：带你10天从算法零基础到精通，左程云/马士兵详解各
 
@@ -52,13 +72,7 @@ xshell
 
 # 复习
 
-JVM中juc、
-
-线程池，连接池设计思想
-
 https://blog.csdn.net/mu_wind/article/details/113806680
-
-自己查询jdk官方文档写动态代理
 
 
 
@@ -84,11 +98,7 @@ https://blog.csdn.net/fangchao2011/article/details/89203535
 
 http://www.itheima.com/course/javaeetext.html
 
-## 不好的培训机构
 
-https://www.bilibili.com/video/BV1Q541177xn/?spm_id_from=333.788.recommend_more_video.3
-
-**含有structs、webservice、jsp**
 
 ## 学习资料
 
@@ -435,9 +445,9 @@ interface InterfaceTest {
 
 https://sharember.blog.csdn.net/article/details/54988623
 
-### 普通内部类的要点：
+### 普通内部类
 
-> - 内部类可以访问外部类变量，包括私有变量
+> - **内部类可以访问外部类变量，包括私有变量**
 >
 >   
 >
@@ -445,33 +455,78 @@ https://sharember.blog.csdn.net/article/details/54988623
 >
 >   
 >
-> - 在外部类中可以访问到内部类的任何变量，包括私有变量。
+> - **在外部类中可以访问到内部类的任何变量，包括私有变量。**
 >
 >   
 >
 > - 在其他类中创建内部类对象需要使用这样的形式：
->   OuterClassName.InnerClassName name = new OuterClassName().new InnerClassName()。
+>   ==OuterClassName.InnerClassName name = new OuterClassName().new InnerClassName()==
 >
 >   
 >
 > - 在其他类中定义的内部类对象不能访问内部类中的私有变量。
 
+
+
+```java
+//外部类
+public class Outer {
+    private String a = "a";
+    public int i = 1;
+    //内部类
+    class Inner{
+        private String b = "b";
+        public String c = "c";
+
+        public int getInt(){
+            return i; // 内部类可以访问外部类变量
+        }
+
+        private String getString(){
+            return a + b + c; // 内部类可以访问外部类的private变量
+        }
+    }
+
+    public String getParam(){
+        Inner inner = new Inner();
+        inner.b = "bb"; // 外部类可以访问内部类的private变量
+        inner.c = "cc";
+        return inner.getInt() + inner.getString();
+    }
+}
+//测试类
+class Test {
+    public static void main(String[] args) {
+        Outer outer = new Outer();
+        System.out.println(outer.getParam()); // 输出：1abbcc
+
+        Outer.Inner oi = outer.new Inner();
+        oi.c = "ccc";
+        //oi.b = "bbb";  编译失败
+        System.out.println(oi.getInt()); // 输出：1
+        //System.out.println(oi.getString()); 编译失败
+    }
+}
+```
+
+
+
 ### 静态内部类
 
 > - 要创建嵌套类的对象，并不需要其外围类的对象。
-> - 静态内部类中不能访问非静态的外部类变量，但是尅访问外部类的静态变量。
+> - ==静态内部类中不能访问非静态的外部类变量==，但是尅访问外部类的静态变量。
 
 
 
 除此之外，由于普通内部类的字段与方法，只能放在类的外部层次上，==所以普通的内部类不能有static方法和static变量，也不能在普通内部类中再包含静态内部类。但是静态内部类可以包含所有这些东西：==
 
-### 静态内部类的要点：
+#### 静态内部类的要点：
 
 > - 在静态内部类中可以存在静态成员
 >
 >   
 >
-> - 静态内部类只能访问外围类的静态成员变量和方法，不能访问外围类的非静态成员变量和方法
+> - ==静态内部类只能访问外围类的静态成员变量和方法，====不能访问外围类的非静态成员变量和方法==
 >
 >   
 >
@@ -479,15 +534,137 @@ https://sharember.blog.csdn.net/article/details/54988623
 >
 >   
 >
-> - 静态内部类在其他类中不能new出来。(new Outer().new StaClass()这样是不行的)
+> - 静态内部类在==其他类中不能new出来。(new Outer().new StaClass()这样是不行的)==
 >
 >   
 >
-> - 但是在外部类中，可以new一个静态内部类的对象。
+> - 但是在==外部类中，可以new一个静态内部类的对象。(写一个获取内部类的方法）==
 >
 >   
 >
 > - 静态内部类中不能使用【.this】
+
+```java
+public class Outer {
+    private int i = 1;
+    public static String str = "str";
+ 	public inter getInter(){
+        return new StaClass();
+    }
+    
+    static class StaClass implements inter{
+        private String s = "s";
+        static int j = 2;
+
+        static int getInt(){
+            //return i + j;
+            return j;
+        }
+
+        private String getString(){
+            return str + s;
+        }
+
+        @Override
+        public void inter() {
+            System.out.println("inter");
+        }
+
+        static class InStaClass{
+            int x = 4;
+            static int y = 5;
+             static int getInt(){
+                //return x; // x是非静态变量 不可以在静态方法中使用
+                return y;
+            }
+        }
+    }
+
+   
+}
+
+class Test{
+    public static void main(String[] args) {
+        int a = Outer.StaClass.getInt();
+
+        //Outer.StaClass.getString(); // getString()为非静态方法，不能这样调用
+
+        int b = Outer.StaClass.InStaClass.getInt();
+
+        System.out.println(a + "----" + b); // 输出 2----5
+
+        //new Outer().new StaClass(); 编译失败 StaClass是静态的
+
+        new Outer().getInter().inter(); // 输出 inter
+
+
+    }
+}
+```
+
+### 局部内部类
+
+在一个方法里或者任意作用域里定义的内部类叫做局部内部类。
+
+#### 一个定义在方法中的类
+
+```
+public class Person {
+    public Eat howToEat(){
+        // 定义在方法中的类
+        class EatWithMouth implements Eat{
+            @Override
+            public void eat() {
+                System.out.println("eat with mouth");
+            }
+        }
+        // 向上转型
+        return new EatWithMouth();
+    }
+
+    public static void main(String[] args) {
+        Eat e = new Person().howToEat();
+        e.eat(); // eat with mouth
+    }
+}
+```
+
+EatWithMouth是方法howToEat中的类而不是Person中的类。你甚至可以在同一个子目录下的任意一个类中给任意一个内部类起EatWithMouth这个名字，而不会有命名冲突。所以，在howToEat方法外的任何地方都不能访问到EatWithMouth类。
+
+当然，这并不意味着一旦howToEat方法执行完毕，EatWithMouth类就不能用了。
+
+####  在任意作用域嵌入一个内部类
+
+可以在任意作用域中嵌入内部类：
+
+```
+public class EveryBlock {
+    private String test(boolean b){
+        if (b){
+            class A{
+                private String a = "a";
+                String getString(){
+                    return a;
+                }
+            }
+            A a = new A();
+            String s = a.getString();
+            return s;
+        }
+        //A a = new A();  编译失败 超出作用域
+        return null;
+    }
+
+    public static void main(String[] args) {
+        EveryBlock eb = new EveryBlock();
+        System.out.println(eb.test(true)); // a
+    }
+}
+```
+
+虽然类A在if语句中，但是这并不表明类A的创建时有条件的，它其实是和别的类一起编译的。但是==它在它定义的作用域之外的不可用的，除此之外与普通内部类一样。==
+
+==不希望这个类是公用的。==
 
 
 
@@ -562,23 +739,46 @@ https://sharember.blog.csdn.net/article/details/54988623
 >
 > 
 
-### 匿名内部类（可以被java8的lambda表达式代替）
+### 匿名内部类
 
-> - 匿名内部类是没有访问修饰符的。
+==（可以被java8的lambda表达式代替）==
+
+
+
+==匿名内部类有如下规则：==
+匿名内部类不能是抽象类，因为系统在创建匿名内部类时，会立即创建匿名内部类的对象。因此不允许将匿名内部类定义成抽象类。
+
+- 匿名内部类不能定义构造器。由于匿名内部类没有类名，所以**无法定义构造器**，但匿名内部类**可以定义初始化块**，可以通过实例初始化块来完成构造器需要完成的事情。
+- 通过实现接口来创建匿名内部类时，**匿名内部类也不能显示创建构造器，因此匿名内部类只有一个隐式的无参构造器，故 new 接口名后的括号里不能传入参数值。(无参构造)**
+- 通过继承父类来创建匿名内部类时，匿名内部类将拥有和父类相似的构造器，此处的相似指拥有相同的形参列表。
+- 创建匿名内部类时，必须实现接口或抽象父类里的所有抽象方法。
+
+
+
+下面对应解释说明:
+
+
+
+- 因为抽象类有构造器但不能直接实例化(因为有抽象方法);上列已经得知创建内部类时会立即创建内部类对象。抽象类是不能实例的，只能作为父类被继承，由子类实现抽象类里的抽象方法。
+- 匿名内部类不能定义构造器，这个好理解，因为构造器就是一个没有返回值，方法名和类一样的构造方法而已，类都是匿名的你怎么定义构造器呢？
+- 实现接口创建匿名内部类时，匿名内部类不能显示创建构造器；我们先回顾下接口，接口里不能包含构造器和初始化块因为 接口里成员变量只能是静态常量，接口里的方法只能是抽象方法、类方法、默认方法
+- 继承父类来创建匿名内部类，匿名内部类将拥有和父类相似的构造器，这个没什么解释，知道就可以它的规则就是这样。
+- 匿名内部类也是类，也需要遵守继承类/抽象类 或 实现接口的规则。
+  
+
+> - 匿名内部类中不能存在任何的静态成员变量和静态方法。
 >
->   匿名内部类中不能存在任何的静态成员变量和静态方法。
+> 
 >
->   
+>   - new 匿名内部类，这个类首先是要存在的。如果我们将那个InnerClass接口注释掉，就会出现编译出错。
 >
-> - new 匿名内部类，这个类首先是要存在的。如果我们将那个InnerClass接口注释掉，就会出现编译出错。
+> 
 >
->   
+>   - 当所在方法的形参需要被匿名内部类使用，那么这个形参就必须为final。
 >
-> - 当所在方法的形参需要被匿名内部类使用，那么这个形参就必须为final。
+> 
 >
->   
->
-> - 匿名内部类创建一个接口的引用时是没有构造方法的。但是可以通过构造代码块来模拟构造器
+>   - 匿名内部类创建一个接口的引用时是没有构造方法的。但是可以通过构造代码块来模拟构造器
 >
 > #### 实现匿名类的另一种方式
 >
@@ -587,7 +787,7 @@ https://sharember.blog.csdn.net/article/details/54988623
 > （第6.2部分）
 >
 > ```java
->     public Inner getInner(final String name, String city) { 
+>    public Inner getInner(final String name, String city) { 
 >         return new Inner(name, city) { 
 >             private String nameStr = name; 
 > 
@@ -598,7 +798,7 @@ https://sharember.blog.csdn.net/article/details/54988623
 >     } 
 > } 
 > ```
->
+> 
 > 
 
 ### 内部类可以实现多重继承
@@ -660,7 +860,9 @@ public class Test1 {
 
 
 
-## 7、枚举类
+## ==7、枚举类==
+
+
 
 https://sharember.blog.csdn.net/article/details/55049192
 
@@ -676,15 +878,114 @@ https://sharember.blog.csdn.net/article/details/55049192
 
   
 
-- 无法从enum继承子类，如果需要扩展enum中的元素，在一个接口的内部，创建实现该接口的枚举，以此将元素进行分组。达到将枚举元素进行分组。
+- ==无法从enum继承子类==，如果需要扩展enum中的元素，在一个接口的内部，创建实现该接口的枚举，以此将元素进行分组。达到将枚举元素进行分组。
 
   
 
-- enum允许程序员为eunm实例编写方法。所以可以为每个enum实例赋予各自不同的行为。
+- enum==允许==程序员为eunm实例==编写方法==。所以可以为每个enum实例赋予各自不同的行为。
+
+- **==自带单例模式，不会被反射破坏==**
+
+
+
+这些事枚举变量的方法。我们接下来会演示几个比较重要的：
+
+```java
+public enum Weekday {
+    SUN,MON,TUS,WED,THU,FRI,SAT
+}
+
+class Test3{
+    public static void main(String[] args) {
+        System.out.println(Weekday.valueOf("mon".toUpperCase()));
+        //MON
+
+    for (Weekday w : Weekday.values()){
+        System.out.println(w + ".ordinal()  ====>" +w.ordinal());
+    }
+    //SUN.ordinal()  ====>0
+    //MON.ordinal()  ====>1
+    //TUS.ordinal()  ====>2
+    //WED.ordinal()  ====>3
+    //THU.ordinal()  ====>4
+    //FRI.ordinal()  ====>5
+    //SAT.ordinal()  ====>6
+
+    System.out.println("Weekday.MON.compareTo(Weekday.FRI) ===> " + Weekday.MON.compareTo(Weekday.FRI));
+    System.out.println("Weekday.MON.compareTo(Weekday.MON) ===> " + Weekday.MON.compareTo(Weekday.MON));
+    System.out.println("Weekday.MON.compareTo(Weekday.SUM) ===> " + Weekday.MON.compareTo(Weekday.SUN));
+    //Weekday.MON.compareTo(Weekday.FRI) ===> -4
+    //Weekday.MON.compareTo(Weekday.MON) ===> 0
+    //Weekday.MON.compareTo(Weekday.SUM) ===> 1
+
+    System.out.println("Weekday.MON.name() ====> " + Weekday.MON.name());
+    //Weekday.MON.name() ====> MON
+
+}
+
+}
+```
+
+这段代码，我们演示了几个常用的方法和功能：
+
+1.Weekday.valueOf() 方法：
+
+> 它的作用是传来一个字符串，然后将它转变为对应的枚举变量。前提是你传的字符串和定义枚举变量的字符串一抹一样，区分大小写。如果你传了一个不存在的字符串，那么会抛出异常。
+>
+
+2.Weekday.values()方法。
+
+> 这个方法会返回包括所有枚举变量的数组。在该例中，返回的就是包含了七个星期的Weekday[]。可以方便的用来做循环。
+>
+
+3.枚举变量的toString()方法。
+
+> 该方法直接返回枚举定义枚举变量的字符串，比如MON就返回【”MON”】。
+>
+
+4.枚举变量的.ordinal()方法。
+
+> 默认请款下，枚举类会给所有的枚举变量一个默认的次序，该次序从0开始，类似于数组的下标。而.ordinal()方法就是获取这个次序（或者说下标）
+>
+
+5.枚举变量的compareTo()方法。
+
+> 该方法用来比较两个枚举变量的”大小”，实际上比较的是两个枚举变量的次序，返回两个次序相减后的结果，如果为负数，就证明变量1”小于”变量2 （变量1.compareTo(变量2)，返回【变量1.ordinal() - 变量2.ordinal()】）
+>
+> ![compareTo源码](java学习.assets/20170213134054780)
+>
+> 这是compareTo的源码，会先判断是不是同一个枚举类的变量，然后再返回差值。
+> 
+
+6.枚举类的name()方法
+
+> 它和toString()方法的==返回值一样==，事实上，这两个方法本来就是一样的：
+> ![name方法](java学习.assets/20170213134518537)
+>
+> ![toString方法](java学习.assets/20170213134611147)
+>
+> 这两个方法的默认实现是一样的，==唯一的区别是==，你==可以重写toString方法==。name变量就是枚举变量的字符串形式
+
+
+
+
+
+要点：
+
+> 使用的是enum关键字而不是class。
+>
+> 多个枚举变量直接用逗号隔开。
+>
+> ==枚举变量最好大写，多个单词之间使用”_”隔开（比如：INT_SUM）==。
+>
+> **定义完所有的变量后，以分号结束**，如果只有枚举变量，而没有自定义变量，分号可以省略（例如上面的代码就忽略了分号）。
+>
+> 在其他类中==使用enum变量的时候==，==只需要【类名.变量名】就可以了，和使用静态变量一样。==
+> 但是这种简单的使用显然不能体现出枚举的强大
 
 ### 可以赋多个值
 
-```
+```java
 public enum Weekday {
     MON(1,"mon"),TUS(2,"tus"),WED(3,"wed"),THU(4,"thu"),FRI(5,"fri"),SAT(6,"sat"),SUN(0,"sun");
 
@@ -723,6 +1024,21 @@ public class TrafficLight {
             break;
         }
     }
+}
+```
+
+### 用静态工厂方法实现单例：
+
+```java
+public class Singleton{
+    private static final Singleton INSTANCE = new Singleton();
+
+private Singleton(){}
+
+public static Singleton getSingleton(){
+    return INSTANCE;
+}
+
 }
 ```
 
@@ -1010,9 +1326,9 @@ public static void main(String[] args) throws Exception {
 
  Constructor:==构造方法==
 > 	* 创建对象：
-> 																		
+> 																				
 > 		* T newInstance(Object... initargs)  
-> 																		
+> 																				
 > 		（==即 constructor.newInstance("张三", 23);==  ）
 >
 > ​	* 如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法
@@ -1268,13 +1584,11 @@ String[] schools() default{"西部开源","清华大学"};
 
 
 
-# java8新功能
+# ==java8新功能==
 
 
 
-**函数式接口+lambda表达式+方法引用+optional类，对比java7和java8的编程方式**
 
-https://blog.csdn.net/Thousa_Ho/article/details/79852743
 
 ## 函数式接口
 
@@ -1290,7 +1604,7 @@ https://www.runoob.com/java/java8-functional-interfaces.html
 
 ![img](https://upload-images.jianshu.io/upload_images/5654620-54f3bb66b35cd761.png?imageMogr2/auto-orient/strip|imageView2/2/w/752/format/webp)
 
-##### 1、 Consumer<T> : 消费型接口，void accept(T t);
+#### 1、 Consumer<T> : 消费型接口，void accept(T t);
 
 代码示例：
 
@@ -1306,7 +1620,7 @@ https://www.runoob.com/java/java8-functional-interfaces.html
     }
 ```
 
-##### 2、 Supplier<T> : 供给型接口，T get();
+#### 2、 Supplier<T> : 供给型接口，T get();
 
 示例代码：
 
@@ -1333,7 +1647,7 @@ https://www.runoob.com/java/java8-functional-interfaces.html
     }
 ```
 
-##### 3、Function<T, R> : 函数型接口，R apply(T t);
+#### 3、Function<T, R> : 函数型接口，R apply(T t);
 
 示例代码：
 
@@ -1356,7 +1670,7 @@ https://www.runoob.com/java/java8-functional-interfaces.html
     
 ```
 
-##### 4、 Predicate<T> : 断言型接口，boolean test(T t);
+#### 4、 Predicate<T> : 断言型接口，boolean test(T t);
 
 示例代码：
 
@@ -1396,7 +1710,11 @@ Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要�
 
 使用 Lambda 表达式可以使代码变的更加简洁紧凑。
 
-lambda 表达式只能引用标记了 final 的外层局部变量，这就是说==不能在lambda 内部修改定义在域外的局部变量，否则会编译错误。==
+lambda 表达式**只能引用标记了 final 的外层局部变量**，这就是说==不能在lambda 内部修改定义在域外的局部变量，否则会编译错误。==
+
+解决办法
+
+
 
 ### 语法
 
@@ -1450,17 +1768,39 @@ https://www.cnblogs.com/wuhenzhidu/p/10727065.html
 
 
 
-## ==stream流==
-
-https://blog.csdn.net/mu_wind/article/details/109516995
+## ==Stream流==
 
 
 
-### Stream的创建
+https://www.bilibili.com/video/BV1kk4y1R7AC?p=12
+
+**注意：**
+
+①Stream 自己不会存储元素。
+
+②Stream 不会改变源对象。相反，他们会==返回一个持有结果的新Stream。== 
+
+③Stream 操作是==延迟执行的==。这意味着他们会等到需要结果的时候才执行
+
+**1-** **创建** **Stream**
+
+一个数据源（如：集合、数组），获取一个流
+
+ **2-** **中间操作**
+
+一个中间操作链，对数据源的数据进行处理
+
+ **3- 终止操作(终端操作)** 
+
+一旦执行终止操作，就执行中间操作链，并产生结果。之后，不会再被使用
+
+![image-20210327121838099](java学习.assets/image-20210327121838099.png)
+
+### 1.Stream的创建
 
 Stream可以通过==集合数组==创建。
 
-1、通过 java.util.Collection.stream() 方法用集合创建流
+1、通过 java.util.==**Collection.stream( )**== 方法用集合创建流
 
 ```java
 //将返回的列表更改为“写入数组”
@@ -1492,7 +1832,7 @@ Stream<String> parallelStream = list.parallelStream();
 >
 > ==用此方法得到的List的长度是不可改变的，==
 
-2、使用java.util.Arrays.stream(T[ ] array)方法用数组创建流
+2、使用java.util.**==Arrays.stream==**(T[ ] array)方法用数组创建流
 
 ```java
 int[] array={1,3,5,6,8};
@@ -1501,165 +1841,32 @@ IntStream stream = Arrays.stream(array);
 
 
 
+3、使用==Stream的静态方法==：of( )、iterate( )、generate( )
 
-3、使用Stream的静态方法：of()、iterate()、generate()
+> iterate( )、generate( )可以创造无限流
 
 ```java
 Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5, 6);
 
+//迭代
 Stream<Integer> stream2 = Stream.iterate(0, (x) -> x + 3).limit(4);
 stream2.forEach(System.out::println);
-
+//生成
 Stream<Double> stream3 = Stream.generate(Math::random).limit(3);
 stream3.forEach(System.out::println);
 ```
 
 
 
-### Stream的使用
+### 2.Stream中间操作
 
-在使用stream之前，先理解一个概念：Optional 。
+#### 1-筛选与切片
 
-> Optional类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。
-
-#### 遍历/匹配（foreach/find/match）
-
-==Stream 提供了新的方法 'forEach' 来迭代流中的每个数据==。以下代码片段使用 forEach 输出了10个随机数：
-
-```java
-Random random = new Random(); 
-random.ints().limit(10).forEach(System.out::println);
-```
+![image-20210327123731953](java学习.assets/image-20210327123731953.png)
 
 
 
-```java
-public class StreamTest {
-	public static void main(String[] args) {
-        List<Integer> list = Arrays.asList(7, 6, 9, 3, 8, 2, 1);
-
-        // 遍历输出符合条件的元素
-        list.stream().filter(x -> x > 6).forEach(System.out::println);
-        
-        // 匹配第一个
-        Optional<Integer> findFirst = list.stream().filter(x -> x > 6).findFirst();
-        
-        // 匹配任意（适用于并行流）
-        Optional<Integer> findAny = list.parallelStream().filter(x -> x > 6).findAny();
-        
-        // 是否包含符合特定条件的元素
-        boolean anyMatch = list.stream().anyMatch(x -> x < 6);
-        System.out.println("匹配第一个值：" + findFirst.get());
-        System.out.println("匹配任意一个值：" + findAny.get());
-        System.out.println("是否存在大于6的值：" + anyMatch);
-    }
-}
-
-```
-
-
-
-------
-
-#### 聚合（max/min/count)
-
-`max`、`min`、`count`这些字眼你一定不陌生，没错，在mysql中我们常用它们进行数据统计。Java stream中也引入了这些概念和用法，极大地方便了我们对集合、数组的数据统计工作。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20201109145217354.png)
-
-**获取`String`集合中最长的元素。**
-
-```java
-public class StreamTest {
-	public static void main(String[] args) {
-		List<String> list = Arrays.asList("adnm", "admmt", "pot", "xbangd", "weoujgsd");
-
-		Optional<String> max = list.stream().max(Comparator.comparing(String::length));
-		System.out.println("最长的字符串：" + max.get());
-	}
-}
-
-```
-
-**获取`Integer`集合中的最大值。**
-
-```java
-public class StreamTest {
-	public static void main(String[] args) {
-		List<Integer> list = Arrays.asList(7, 6, 9, 4, 11, 6);
-
-		// 自然排序
-		Optional<Integer> max = list.stream().max(Integer::compareTo);
-		// 自定义排序
-		Optional<Integer> max2 = list.stream().max(new Comparator<Integer>() {
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				return o1.compareTo(o2);
-			}
-		});
-		System.out.println("自然排序的最大值：" + max.get());
-		System.out.println("自定义排序的最大值：" + max2.get());
-	}
-}
- 
-```
-
-**获取员工工资最高的人。**
-
-```java
-public class StreamTest {
-	public static void main(String[] args) {
-		List<Person> personList = new ArrayList<Person>();
-		personList.add(new Person("Tom", 8900, 23, "male", "New York"));
-		personList.add(new Person("Jack", 7000, 25, "male", "Washington"));
-		personList.add(new Person("Lily", 7800, 21, "female", "Washington"));
-		personList.add(new Person("Anni", 8200, 24, "female", "New York"));
-		personList.add(new Person("Owen", 9500, 25, "male", "New York"));
-		personList.add(new Person("Alisa", 7900, 26, "female", "New York"));
-
-		Optional<Person> max = personList.stream().max(Comparator.comparingInt(Person::getSalary));
-		System.out.println("员工工资最大值：" + max.get().getSalary());
-	}
-}
-
-```
-
-**计算`Integer`集合中大于6的元素的个数。**
-
-```java
-import java.util.Arrays;
-import java.util.List;
-
-public class StreamTest {
-	public static void main(String[] args) {
-		List<Integer> list = Arrays.asList(7, 6, 4, 8, 2, 11, 9);
-
-		long count = list.stream().filter(x -> x > 6).count();
-		System.out.println("list中大于6的元素个数：" + count);
-	}
-}
-
-```
-
-
-
-
-
-#### map
-
-map 方法用于==映射每个元素到对应的结果==，以下代码片段使用 map 输出了元素对应的平方数：
-
-![img](https://img-blog.csdnimg.cn/20201109145252340.jpg)
-
-```java
-List<Integer> numbers = Arrays.asList(3, 2, 2, 3, 7, 3, 5); // 获取对应的平方数 
-List<Integer> squaresList = numbers.stream().map( i -> i*i).distinct().collect(Collectors.toList());
-```
-
-
-
-------
-
-#### filter
+##### 过滤
 
 filter 方法用于==将结果为false的元素过滤掉==。以下代码片段使用 filter 方法过滤出空字符串：
 
@@ -1672,9 +1879,11 @@ long count = strings.stream().filter(string -> string.isEmpty()).count();
 
 ------
 
-#### 提取/组合
+##### 提取/组合
 
 流也可以进行==合并、去重、限制、跳过==等操作。
+
+**skip(long n)**  跳过元素，==返回一个扔掉了前 n 个元素的流==。若流中元素不足 n 个，则返回一个空流。与 limit(n) 互补
 
 ```java
 public class StreamTest {
@@ -1704,55 +1913,84 @@ public class StreamTest {
 
 
 
+#### 2-映射
 
+map 方法用于==映射每个元素到对应的结果==，以下代码片段使用 map 输出了元素对应的平方数：
 
-------
+![img](https://img-blog.csdnimg.cn/20201109145252340.jpg)
 
-#### 排序(sorted)
+```java
+List<Integer> numbers = Arrays.asList(3, 2, 2, 3, 7, 3, 5); // 获取对应的平方数 
+List<Integer> squaresList = numbers.stream().map( i -> i*i).distinct().collect(Collectors.toList());
+```
+
+![image-20210327103216767](java学习.assets/image-20210327103216767.png)
+
+**map与flatMap区别**
+
+https://www.bilibili.com/video/BV1kk4y1R7AC?p=15
+
+如果==集合里面套集合==，又想遍历每一个元素，使用flatMap（相当于把集合打散了）
+
+如果使用map完成这个操作，需要双重forEach输出
+
+#### 3-排序
 
 sorted，中间操作。有两种排序：
 
-- sorted()：自然排序，流中元素需实现Comparable接口
+- sorted()：自然排序==（从小到大）==，流中元素需实现Comparable接口
 - sorted(Comparator com)：Comparator排序器自定义排序
 
-**案例：将员工按工资由高到低（工资一样则按年龄由大到小）排序**
+
+
+> ==自定义比较规则==
+>
+> 1.如果使用==compare方法==
+>
+> 返回值为：==数据类型.compare(e1,getXxx,e2.getXxx)==
+>
+> 
+>
+> 2.如果使用==compareTo方法==
+>
+> 返回值为：
+>
+> ```java
+> //此方法前面用map映射获取了要比较的对象属性
+> .map(u -> {
+>             return u.getName().toUpperCase();
+>         })
+> .sorted((uu1, uu2) -> {
+>     return uu2.compareTo(uu1);
+> })
+> ```
 
 ```java
-public class StreamTest {
-	public static void main(String[] args) {
-		List<Person> personList = new ArrayList<Person>();
+//3-排序
+    @Test
+    public void test4(){
+//        sorted()——自然排序
+        List<Integer> list = Arrays.asList(12, 43, 65, 34, 87, 0, -98, 7);
+        list.stream().sorted().forEach(System.out::println);
+        //抛异常，原因:Employee没有实现Comparable接口
+//        List<Employee> employees = EmployeeData.getEmployees();
+//        employees.stream().sorted().forEach(System.out::println);
 
-		personList.add(new Person("Sherry", 9000, 24, "female", "New York"));
-		personList.add(new Person("Tom", 8900, 22, "male", "Washington"));
-		personList.add(new Person("Jack", 9000, 25, "male", "Washington"));
-		personList.add(new Person("Lily", 8800, 26, "male", "New York"));
-		personList.add(new Person("Alisa", 9000, 26, "female", "New York"));
 
-		// 按工资升序排序（自然排序）
-		List<String> newList = personList.stream().sorted(Comparator.comparing(Person::getSalary)).map(Person::getName)
-				.collect(Collectors.toList());
-		// 按工资倒序排序
-		List<String> newList2 = personList.stream().sorted(Comparator.comparing(Person::getSalary).reversed())
-				.map(Person::getName).collect(Collectors.toList());
-		// 先按工资再按年龄升序排序
-		List<String> newList3 = personList.stream()
-				.sorted(Comparator.comparing(Person::getSalary).thenComparing(Person::getAge)).map(Person::getName)
-				.collect(Collectors.toList());
-		// 先按工资再按年龄自定义排序（降序）
-		List<String> newList4 = personList.stream().sorted((p1, p2) -> {
-			if (p1.getSalary() == p2.getSalary()) {
-				return p2.getAge() - p1.getAge();
-			} else {
-				return p2.getSalary() - p1.getSalary();
-			}
-		}).map(Person::getName).collect(Collectors.toList());
+//        sorted(Comparator com)——定制排序
 
-		System.out.println("按工资升序排序：" + newList);
-		System.out.println("按工资降序排序：" + newList2);
-		System.out.println("先按工资再按年龄升序排序：" + newList3);
-		System.out.println("先按工资再按年龄自定义降序排序：" + newList4);
-	}
-}
+        List<Employee> employees = EmployeeData.getEmployees();
+        employees.stream().sorted( (e1,e2) -> {
+
+           int ageValue = Integer.compare(e1.getAge(),e2.getAge());
+           if(ageValue != 0){
+               return ageValue;
+           }else{
+               return -Double.compare(e1.getSalary(),e2.getSalary());
+           }
+
+        }).forEach(System.out::println);
+    }
 
 ```
 
@@ -1760,13 +1998,135 @@ public class StreamTest {
 
 
 
-------
-
-#### Collectors
 
 
+### 3.Stream终止操作
 
-Collectors 类实现了很多归约操作，例如将流转换成集合和聚合元素。Collectors 可用于返回列表或字符串：
+终端操作会从流的流水线生成结果。其结果可以是任何不是流的值，例
+
+如：List、Integer，甚至是 void 。 
+
+流进行了终止操作后，不能再次使用。
+
+#### 1-匹配与查找
+
+
+
+![image-20210327122933722](java学习.assets/image-20210327122933722.png)
+
+![image-20210327123003099](java学习.assets/image-20210327123003099.png)
+
+
+
+```java
+ //1-匹配与查找
+    @Test
+    public void test1(){
+        List<Employee> employees = EmployeeData.getEmployees();
+
+//        allMatch(Predicate p)——检查是否匹配所有元素。
+//          练习：是否所有的员工的年龄都大于18
+        boolean allMatch = employees.stream().allMatch(e -> e.getAge() > 18);
+        System.out.println(allMatch);
+
+//        anyMatch(Predicate p)——检查是否至少匹配一个元素。
+//         练习：是否存在员工的工资大于 10000
+        boolean anyMatch = employees.stream().anyMatch(e -> e.getSalary() > 10000);
+        System.out.println(anyMatch);
+
+//        noneMatch(Predicate p)——检查是否没有匹配的元素。
+//          练习：是否存在员工姓“雷”
+        boolean noneMatch = employees.stream().noneMatch(e -> e.getName().startsWith("雷"));
+        System.out.println(noneMatch);
+//        findFirst——返回第一个元素
+        Optional<Employee> employee = employees.stream().findFirst();
+        System.out.println(employee);
+//        findAny——返回当前流中的任意元素
+        Optional<Employee> employee1 = employees.parallelStream().findAny();
+        System.out.println(employee1);
+
+    }
+```
+
+
+
+```java
+@Test
+    public void test2(){
+        List<Employee> employees = EmployeeData.getEmployees();
+        // count——返回流中元素的总个数
+        long count = employees.stream().filter(e -> e.getSalary() > 5000).count();
+        System.out.println(count);
+//        max(Comparator c)——返回流中最大值
+//        练习：返回最高的工资：
+        Stream<Double> salaryStream = employees.stream().map(e -> e.getSalary());
+        Optional<Double> maxSalary = salaryStream.max(Double::compare);
+        System.out.println(maxSalary);
+//        min(Comparator c)——返回流中最小值
+//        练习：返回最低工资的员工
+        Optional<Employee> employee = employees.stream().min((e1, e2) -> Double.compare(e1.getSalary(), e2.getSalary()));
+        System.out.println(employee);
+        System.out.println();
+//        forEach(Consumer c)——内部迭代
+        employees.stream().forEach(System.out::println);
+
+        //使用集合的遍历操作
+        employees.forEach(System.out::println);
+    }
+```
+
+#### 2-归约
+
+归约，也称缩减，顾名思义，==是把一个流缩减成一个值，能实现对集合求和、求乘积和求最值操作。==
+
+![image-20210327123030787](java学习.assets/image-20210327123030787.png)
+
+
+案例一：求Integer集合的元素之和、乘积和最大值。
+
+```java
+public class StreamTest {
+	public static void main(String[] args) {
+		List<Integer> list = Arrays.asList(1, 3, 2, 8, 11, 4);
+		// 求和方式1
+		Optional<Integer> sum = list.stream().reduce((x, y) -> x + y);
+		// 求和方式2
+		Optional<Integer> sum2 = list.stream().reduce(Integer::sum);
+		// 求和方式3
+		Integer sum3 = list.stream().reduce(0, Integer::sum);
+		
+
+	// 求乘积
+	Optional<Integer> product = list.stream().reduce((x, y) -> x * y);
+
+	// 求最大值方式1
+	Optional<Integer> max = list.stream().reduce((x, y) -> x > y ? x : y);
+	// 求最大值写法2
+	Integer max2 = list.stream().reduce(1, Integer::max);
+
+	System.out.println("list求和：" + sum.get() + "," + sum2.get() + "," + sum3);
+	System.out.println("list求积：" + product.get());
+	System.out.println("list求和：" + max.get() + "," + max2);
+}
+
+}
+```
+
+
+
+#### 3-收集、统计
+
+![image-20210327123118765](java学习.assets/image-20210327123118765.png)
+
+
+
+==Collector 接口==中方法的实现决定了**如何对流执行收集的操作(如收集到 List、Set、Map)**。
+
+另外， Collectors 实用类提供了很多静态方法，可以方便地创建常见收集器实例，
+
+
+
+==Collectors 类==实现了很多归约操作，例如将流转换成集合和聚合元素。Collectors 可用于返回列表或字符串：
 
 ```java
 List<String>strings = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
@@ -1777,7 +2137,7 @@ String mergedString = strings.stream().filter(string -> !string.isEmpty()).colle
 System.out.println("合并字符串: " + mergedString);
 ```
 
-##### 归集(toList/toSet/toMap)
+##### 收集
 
 因为流不存储数据，那么在流中的数据完成处理后，需要==将流中的数据重新归集到新的集合==里。`toList`、`toSet`和`toMap`比较常用，另外还有`toCollection`、`toConcurrentMap`等复杂一些的用法。
 
@@ -1804,9 +2164,7 @@ public class StreamTest {
 
 ```
 
-------
-
-#### 统计(count/averaging)
+##### 统计(count/averaging)
 
 Collectors提供了一系列用于==数据统计的静态方法：==
 
@@ -1848,8 +2206,6 @@ public class StreamTest {
 
 
 
-
-
 ## ==Optional 类==
 
 https://www.runoob.com/java/java8-optional-class.html
@@ -1868,23 +2224,23 @@ Optional 是个容器：它可以保存类型T的值，或者仅仅保存null。
 
 ### 常用方法介绍
 
-| 序号 | 方法 & 描述                                                  |
-| :--- | :----------------------------------------------------------- |
-| 1    | **static <T> Optional<T> empty()**<br />返回空的 Optional 实例。 |
-| 2    | **boolean equals(Object obj)**<br />判断其他对象是否等于 Optional。 |
-| 3*   | **Optional<T> ==filter==(Predicate<? super <T> predicate)**<br />如果值存在，并且这个值匹配给定的 predicate，返回一个Optional用以描述这个值，否则返回一个空的Optional。 |
-| 4    | **<U> Optional<U> flatMap(Function<? super T,Optional<U>> mapper)**<br />如果值存在，返回基于Optional包含的映射方法的值，否则返回一个空的Optional |
-| 5*   | ==**T get()**==<br />如果在这个Optional中包含这个值，返回值，否则抛出异常：NoSuchElementException |
-| 6    | **int hashCode()**<br />返回存在值的哈希码，如果值不存在 返回 0。 |
-| 7*   | **void ==ifPresent==(Consumer<? super T> consumer)**<br />如果值存在则使用该值调用 consumer , 否则不做任何事情。 |
-| 8*   | **boolean ==isPresent()==**<br />如果值存在则方法会返回true，否则返回 false。 |
-| 9*   | <U>Optional<U> ==**map**==(Function<? super T,? extends U> mapper)<br />如果有值，则对其==执行调用映射函数得到返回值==。如果返回值==不为 null==，则创建包==含映射返回值的Optional==作为map方法返回值，==否则返回空Optional==。 |
-| 10*  | **static <T> Optional<T> ==of==(T value)**<br />返回一个指定==非null值==的Optional。 |
-| 11*  | **static <T> Optional<T> ==ofNullable==(T value)**<br />如果为非空，返回 Optional 描述的指定值，否则返回空的 Optional。 |
-| 12*  | **T ==orElse==(T other)**<br />如果存在该值，返回值， 否则返回 other。 |
-| 13*  | **T ==orElseGet==(Supplier<? extends T> other)**<br />如果存在该值，返回值， 否则触发 other，并返回 other 调用的结果**（参数可以使用lambda表达式）**。 |
-| 14   | **<X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)**<br />如果存在该值，返回包含的值，否则抛出由 Supplier 继承的异常 |
-| 15   | **String toString()**<br />返回一个Optional的非空字符串，用来调试 |
+| 序号    | 方法 & 描述                                                  |
+| :------ | :----------------------------------------------------------- |
+| 1       | **static <T> Optional<T> empty()**<br />返回空的 Optional 实例。 |
+| 2       | **boolean equals(Object obj)**<br />判断其他对象是否等于 Optional。 |
+| ==3*==  | **Optional<T> ==filter==(Predicate<? super <T> predicate)**<br />如果值存在，并且这个值匹配给定的 predicate，返回一个Optional用以描述这个值，否则返回一个空的Optional。 |
+| 4       | **<U> Optional<U> flatMap(Function<? super T,Optional<U>> mapper)**<br />如果值存在，返回基于Optional包含的映射方法的值，否则返回一个空的Optional |
+| ==5*==  | ==**T get()**==<br />如果在这个Optional中包含这个值，返回值，否则抛出异常：NoSuchElementException |
+| 6       | **int hashCode()**<br />返回存在值的哈希码，如果值不存在 返回 0。 |
+| ==7*==  | **void ==ifPresent==(Consumer<? super T> consumer)**<br />如果==值存在==则使用该值==调用 consumer== , 否则不做任何事情。 |
+| ==8*==  | **boolean ==isPresent()==**<br />如果值存在则方法会返回true，否则返回 false。 |
+| ==9*==  | <U>Optional<U> ==**map**==(Function<? super T,? extends U> mapper)<br />如果有值，则对其==执行调用映射函数得到返回值==。如果返回值==不为 null==，则创建包==含映射返回值的Optional==作为map方法返回值，==否则返回空Optional==。 |
+| ==10*== | **static <T> Optional<T> ==of==(T value)**<br />返回一个指定==非null值==的Optional。 |
+| ==11*== | **static <T> Optional<T> ==ofNullable==(T value)**<br />如果为非空，返回 Optional 描述的指定值，否则返回空的 Optional。 |
+| ==12*== | **T ==orElse==(T other)**<br />如果存在该值，返回值， 否则返回 other。 |
+| ==13*== | **T ==orElseGet==(Supplier<? extends T> other)**<br />如果存在该值，返回值， 否则触发 other，并返回 other 调用的结果**（参数可以使用==lambda表达式==）**。 |
+| 14      | **<X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)**<br />如果存在该值，返回包含的值，否则抛出由 Supplier 继承的异常 |
+| 15      | **String toString()**<br />返回一个Optional的非空字符串，用来调试 |
 
 ### 案例
 
@@ -1922,10 +2278,7 @@ public class Java8Tester {
       Integer value2 = b.get();
       return value1 + value2;
    }
-    
-    
-    
-    
+        
 }
 ```
 
@@ -2005,9 +2358,9 @@ if(user != null) {
 
 
 
-### null的处理
+### ==java8的null的处理==
 
-我们现在就来对比一下下面四种常见的null处理中，Java 8的Lambda+Optional和传统Java两者之间对于null的处理差异。
+我们现在就来对比一下下面四种常见的null处理中，Java 8的==Lambda+Optional==和传统Java两者之间对于null的处理差异。
 
 情况一 - 存在则开干
 
@@ -2027,7 +2380,7 @@ if(user != null) {
 
 由上述四种情况可以清楚地看到，`Optional<T>+Lambda`可以让我们少写很多ifElse块。尤其是对于情况四那种夺命连环null检查，传统java的写法显得冗长难懂，而新的`Optional<T>+Lambda`则清新脱俗，清楚简洁。
 
-# java基础知识整理、狂神、黑马
+# java基础知识
 
 
 
@@ -3262,7 +3615,7 @@ https://www.runoob.com/design-pattern/singleton-pattern.html
 > - 2、Windows 是多进程多线程的，在操作一个文件的时候，就不可避免地出现多个进程或线程同时操作一个文件的现象，所以所有文件的处理必须通过唯一的实例来进行。
 > - 3、一些设备管理器常常设计为单例模式，比如一个电脑有两台打印机，在输出的时候就要处理不能两台打印机打印同一个文件。
 
-#### 1.懒汉式
+#### 1.懒汉式(线程安全)
 
 **是否 Lazy 初始化：**是
 
@@ -3411,9 +3764,29 @@ public class Singleton {
 
 
 
-#### 5.枚举式
+#### ==5.枚举式==
 
+**JDK 版本：**JDK1.5 起
 
+**是否 Lazy 初始化：**否
+
+**是否多线程安全：**是
+
+**实现难度：**易
+
+**描述：**这种实现方式还没有被广泛采用，但这是实现单例模式的最佳方法。==它更简洁，自动支持序列化机制，绝对防止多次实例化==。
+这种方式是 Effective Java 作者 Josh Bloch 提倡的方式，它==不仅能避免多线程同步问题，而且还自动支持序列化机制，防止反序列化重新创建新的对象，绝对防止多次实例化。==不过，由于 JDK1.5 之后才加入 enum 特性，用这种方式写不免让人感觉生疏，在实际工作中，也很少用。
+不能通过 reflection attack 来调用私有构造方法。
+
+```java
+public enum Singleton {  
+    INSTANCE;  
+    public void whateverMethod() {  
+    }  
+}
+```
+
+**经验之谈：**一般情况下，不建议使用第 1 种和第 2 种懒汉方式，==建议使用第 3 种饿汉方式==。只有在要明确实现 lazy loading 效果时，才会使用第 5 种登记方式。如果==涉及到反序列化创建对象==时，可以尝试使用第 6 种==枚举方式==。如果有其他特殊的需求，可以考虑使用第 4 种双检锁方式。
 
 ### 工厂模式
 
@@ -4570,7 +4943,11 @@ https://www.cnblogs.com/java1024/archive/2019/11/28/11950129.html
 
 https://blog.csdn.net/tongxuexie/article/details/80145663
 
-## Java中线程实现的方式
+视频学习
+
+https://www.bilibili.com/video/BV1V4411p7EF?p=9&spm_id_from=pageDriver
+
+## ==Java中线程实现的方式==
 
 
 
@@ -4605,6 +4982,8 @@ public class ThreadDemo02{
 
 ### 实现 Runnable 接口
 
+先创建runable接口实现类，再实例化Thread类对象，把实现类对象放到括号里
+
 ```java
 class MyThread implements Runnable{ // 实现Runnable接口，作为线程的实现类
     private String name ;       // 表示线程的名称
@@ -4638,7 +5017,37 @@ public class RunnableDemo01{
 
 
 
-### ==实现callable接口方式==
+### ==**lambda表达式简化与匿名内部类简化对比**==
+
+```java
+public static void test1() {
+    Thread t = new Thread(() -> {
+        System.out.println("t1running");
+    }, "t1");
+    t.start();
+    
+}
+
+public static void test2() {
+    Thread thread = new Thread() {
+        @Override
+        public void run() {
+            System.out.println("t2running");
+        }
+    };
+    thread.setName("t2");
+    thread.start();
+   
+}
+```
+
+
+
+![image-20210323091047123](java学习.assets/image-20210323091047123.png)
+
+### 实现callable接口方式
+
+#### 直接使用
 
 ```java
 public class MyCallable implements Callable<String> {
@@ -4671,6 +5080,49 @@ public class MyCallable implements Callable<String> {
     }
 }
 ```
+
+#### 配合线程池创建
+
+![image-20210322205539311](java学习.assets/image-20210322205539311.png)
+
+```java
+//实现callable接口
+public class PoolCallableTest implements Callable {
+    //重写call方法
+    @Override
+    public Boolean call() throws Exception {
+        System.out.println(Thread.currentThread().getName());
+        return true;
+    }
+
+    public static void main(String[] args) {
+//创建执行服务
+        ExecutorService service = Executors.newFixedThreadPool(5);
+//创建目标对象
+        PoolCallableTest t1 = new PoolCallableTest();
+        PoolCallableTest t2 = new PoolCallableTest();
+//提交执行
+        Future<Boolean> future = service.submit(t1);
+        Future<Boolean> future2 = service.submit(t2);
+//获取值需要抛异常
+        try {
+            Boolean aBoolean = future.get();
+            System.out.println(aBoolean);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+//关闭服务
+        service.shutdown();
+
+    }
+
+
+}
+```
+
+
 
 优点：
 
@@ -4752,13 +5204,19 @@ new Thread(my)
 
 #### 多线程常用方法
 
+##### ==start与run方法==
+
+-  start方法：==用来启动一个线程==， 这时此线程是处于就绪状态， 并没有运行。 然后通过此Thread类调用方法run()来完成其运行操作的， 这里方法run()称为线程体， 它包含了要执行的这个线程的内容， run方法运行结束， 此线程终止， 而CPU再运行其它线程，
+
+- 直接用run方法： 这只是调用一个方法而已， ==程序中依然只有主线程--这一个线程==， 其程序执行路径还是只有一条， 这样就没有达到写线程的目的。
+
 多线程常用方法等待线程终止------join()方法
 
 > 等待线程终止：在线程中插入执行另一个线程，该线程被阻塞，直到插入执行的线程完全执行完毕以后，该线程才继续执行下去
 >
 > ![image-20210203183122337](java学习.assets/image-20210203183122337.png)
 
-**线程休眠------sleep()方法**
+##### 线程休眠------sleep()方法
 
 > 线程休眠：指的是让线程暂缓执行，等到预计时间之后再恢复执行。
 >
@@ -4768,7 +5226,7 @@ new Thread(my)
 >
 > （3）调用sleep()方法让线程从运行状态转换为阻塞状态；sleep()方法调用结束后，线程从阻塞状态转换为可执行状态。
 
-**线程让步------yield()方法**
+##### 线程让步------yield()方法
 
 > 线程让步：暂停当前正在执行的线程对象，并执行其他线程。
 >
@@ -4780,17 +5238,15 @@ new Thread(my)
 >
 > （4）使用yield()方法不会让线程进入阻塞状态，而是让线程从运行状态转换为就绪状态，只需要等待重新获取CPU执行的机会
 
-。
-
-
-
-**sleep和wait的异同：**
+##### sleep和wait的异同：
 
 > 相同点：一旦执行方法以后，都会使得当前的进程进入阻塞状态
 > 不同点：
 > 1.两个方法声明的位置不同，Thread类中声明sleep，Object类中声明wait。
 > 2.调用的要求不同，sleep可以在任何需要的场景下调用，wait必须使用在同步代码块或者同步方法中
 > 3.关于是否释放同步监视器，如果两个方法都使用在同步代码块或同步方法中，sleep不会释放，wait会释放
+
+
 
 
 
@@ -4877,9 +5333,37 @@ thread1.interrupt();
 
 #### ==线程安全==
 
-## ==线程池???==
+##### ==什么时候加锁==（考虑线程安全）？
+
+> ​		共享变量：（比如说静态变量）不安全
+>
+> ​		私有变量：（局部变量）线程安全.
+>
+> **如果方法内局部变量没有逃离方法的作用访问，它是线程安全的**
+>
+> **如果是局部变量引用了对象，并逃离方法的作用方法，需要考虑线程安全**
+>
+> ​	![image-20210306152257605](java学习.assets/image-20210306152257605.png)
+
+
+
+### 设置守护线程
+
+![image-20210322211221062](java学习.assets/image-20210322211221062.png)
+
+
+
+
+
+
+
+## ==线程池==
 
 https://blog.csdn.net/qfc8930858/article/details/89791560?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
+
+视频讲解
+
+https://www.bilibili.com/video/BV1V4411p7EF?p=27
 
 **思路**：提前创建好多个线程，放入线程池之，==使用时直接获取==，使用完放回池中。可以避免频繁创建销毁，==实现重复利用==。类似生活中的公共交通工具。==（数据库连接池）==
 **好处**：
@@ -4890,7 +5374,7 @@ https://blog.csdn.net/qfc8930858/article/details/89791560?utm_medium=distribute.
 
 
 
-#### ==面试问题==
+### ==面试问题==
 
 ------
 
@@ -4906,9 +5390,9 @@ https://blog.csdn.net/qfc8930858/article/details/89791560?utm_medium=distribute.
 
  **执行execute()方法和submit()方法的区别是什么呢？**
 
-> 1)**`execute()` 方法用于提交不需要返回值的任务，所以无法判断任务是否被线程池执行成功与否；**
+> 1)**`execute()` 方法用于提交不需要返回值的任务，所以==无法判断任务是否被线程池执行成功与否==；**
 >
-> 2)**`submit()` 方法用于提交需要返回值的任务。线程池会返回一个Future类型的对象，通过这个Future对象可以判断任务是否执行成功**，并且可以通过future的get()方法来获取返回值，get()方法会阻塞当前线程直到任务完成，而使用 `get（long timeout，TimeUnit unit）`方法则会阻塞当前线程一段时间后立即返回，这时候有可能任务没有执行完。
+> 2)**`submit()` 方法用于提交需要返回值的任务。线程池会==返回一个Future类型的对象==，通过这个Future对象==可以判断==任务是否执行成功**，并且可以通过future的get()方法来获取返回值，get()方法会阻塞当前线程直到任务完成，而使用 `get（long timeout，TimeUnit unit）`方法则会阻塞当前线程一段时间后立即返回，这时候有可能任务没有执行完。
 
 
 
@@ -4918,8 +5402,8 @@ https://blog.csdn.net/qfc8930858/article/details/89791560?utm_medium=distribute.
 >
 > Executors 返回线程池对象的弊端如下：
 >
-> - **FixedThreadPool 和 SingleThreadExecutor** ： 允许请求的队列长度为 Integer.MAX_VALUE ，可能堆积大量的请求，从而导致OOM。
-> - **CachedThreadPool 和 ScheduledThreadPool** ： 允许创建的线程数量为 Integer.MAX_VALUE ，可能会创建大量线程，从而导致OOM。
+> - **FixedThreadPool 和 SingleThreadExecutor** ： 允许请求的队列长度为 Integer.MAX_VALUE ，==可能堆积大量的请求==，从而导致OOM。
+> - **CachedThreadPool 和 ScheduledThreadPool** ： 允许创建的线程数量为 Integer.MAX_VALUE ，==可能会创建大量线程==，从而导致OOM。
 >
 > **方式一：通过构造方法实现** 
 >
@@ -4941,29 +5425,30 @@ https://blog.csdn.net/qfc8930858/article/details/89791560?utm_medium=distribute.
 
 ------
 
+### 线程池使用![image-20210323103919253](java学习.assets/image-20210323103919253.png)
 
-
-#### 四种线程池
+### 四种线程池
 
 https://blog.csdn.net/tanghui270270/article/details/80595961?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.control
 
 （此链接为四种线程池的使用）
 
-Java通过Executors提供四种线程池，分别为
+Java通过==Executors==提供四种线程池，分别为
 
-1. newSingleThreadExecutor( ) 创建一个==单线程化的线程池==，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。
-2. newFixedThreadPool (n)创建一个==定长线程池==，可控制线程最大并发数，超出的线程会在队列中等待。
-3. newScheduledThreadPool (n)创建一个==可定期或者延时执行任务的定长线程池==，支持定时及周期性任务执行。 
-4. newCachedThreadPool ( )创建一个==可缓存线程池==，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。 
+1. **newSingleThreadExecutor**==( )== 创建一个==单线程化的线程池==，它只会用==唯一的工作线程==来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。
+2. **newFixedThreadPool** ==(n)==创建一个==定长线程池==，可控制线程==最大==并发数，超出的线程会在队列中等待。
+3. newScheduledThreadPool ==(n)==创建一个==可定期或者延时执行任务的定长线程池==，支持定时及周期性任务执行。 
+4. **newCachedThreadPool** ==( )==创建一个==可缓存线程池==，如果线程池长度超过处理需要，==可灵活回收空闲线程==，若无可回收，则新建线程。 
 
-将线程放入线程池的两种方法
-1- ExecutorService类中的submit(Runnable task)  submit(Callable<T> task)     ==//参数可以使用匿名类，对象的引用，对象==
+#### ==将线程放入线程池的两种方法==
 
-2-Executor接口中的execute(Runnable command)
+1- ExecutorService类中的==submit==(Runnable task)  submit(Callable<T> task)     ==//参数可以使用匿名类，对象的引用，对象==
+
+2-Executor接口中的==execute==(Runnable command)
 
 ==ExecutorService实际上是一个线程池的管理工具：==
 
-##### newCachedThreadPool
+#### newCachedThreadPool
 
 ```java
 /**
@@ -5005,7 +5490,7 @@ public class NewCachedThreadPool {
 }
 ```
 
-##### newFixedThreadPool
+#### newFixedThreadPool
 
 ```java
 /**
@@ -5058,7 +5543,7 @@ public class NewFixedThreadPool {
 
 
 
-##### newScheduledThreadPool 
+#### newScheduledThreadPool 
 
 ```java
 /**
@@ -5147,7 +5632,7 @@ public class NewScheduledThreadPool {
 }
 ```
 
-##### newSingleThreadExecutor 
+#### newSingleThreadExecutor 
 
 ```java
 /**
@@ -5199,7 +5684,7 @@ public class NewSingleThreadExecutor {
 
 
 
-#####  ==Callable接口测试== 
+####  ==Callable接口配合线程池测试== ？？？？
 
 https://www.cnblogs.com/wanqieddy/p/3853863.html
 
@@ -5261,32 +5746,75 @@ class TaskWithResult implements Callable<String> {
 
 
 
+#### 配合线程池创建
+
+![image-20210322205539311](java学习.assets/image-20210322205539311.png)
+
+```java
+//实现callable接口
+public class PoolCallableTest implements Callable {
+    //重写call方法
+    @Override
+    public Boolean call() throws Exception {
+        System.out.println(Thread.currentThread().getName());
+        return true;
+    }
+
+    public static void main(String[] args) {
+//创建执行服务
+        ExecutorService service = Executors.newFixedThreadPool(5);
+//创建目标对象
+        PoolCallableTest t1 = new PoolCallableTest();
+        PoolCallableTest t2 = new PoolCallableTest();
+//提交执行
+        Future<Boolean> future = service.submit(t1);
+        Future<Boolean> future2 = service.submit(t2);
+//获取值需要抛异常
+        try {
+            Boolean aBoolean = future.get();
+            System.out.println(aBoolean);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+//关闭服务
+        service.shutdown();
+
+    }
 
 
-#### 线程同步
+}
+```
+
+
+
+
+
+## 线程同步
 
 https://www.cnblogs.com/XHJT/p/3897440.html
 
-##### **1.同步方法**
+### ==1.同步方法==
 
   即==有synchronized关键字修饰的方法。==
   由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，
   内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。
 
-
   代码如：
   public synchronized void save(){}
 
 
-  ==注： synchronized关键字也可以修饰静态方法，此时如果调用该静态方法，将会锁住整个类==
+  ==注： synchronized关键字也可以修饰静态方法，此时如果调用该静态方法，将会锁住整个类。==
 
- 
+默认是锁this
 
-##### 2.同步代码块
+### ==2.同步代码块==
 
-  即有synchronized关键字修饰的语句块。
+> 这两个都是隐式锁
+
+  即有==synchronized关键字修饰的语句块==。
   被该关键字修饰的语句块会自动被加上内置锁，从而实现同步
-
 
   代码如：
   synchronized(object){
@@ -5295,7 +5823,9 @@ https://www.cnblogs.com/XHJT/p/3897440.html
   注：同步是一种高开销的操作，因此应该尽量减少同步的内容。
   通常没有必要同步整个方法，使用synchronized代码块同步关键代码即可。
 
-其中的锁，在==非静态方法中可为this，在静态方法中为当前类本身（例如单例模式的懒汉式：Singleton.class）。也可以为类的实例==
+![image-20210323084901427](java学习.assets/image-20210323084901427.png)
+
+其中的锁，在==非静态方法中可为this，在静态方法中为当前**类本身**（例如单例模式的懒汉式：Singleton.class）。也可以为类的实例==
 
   ```java
 
@@ -5320,7 +5850,7 @@ https://www.cnblogs.com/XHJT/p/3897440.html
             }
   ```
 
-##### **3.使用特殊域变量(volatile)实现线程同步**
+### 3.使用特殊域变量(volatile)实现线程同步
 
   a.volatile关键字为域变量的访问提供了==一种免锁机制==，
   b.使用volatile修饰域相当于告诉虚拟机该域可能会被其他线程更新，
@@ -5346,18 +5876,20 @@ https://www.cnblogs.com/XHJT/p/3897440.html
         }
     ｝
 ```
-##### **4.使用重入锁实现线程同步**
+### ==4.使用重入锁实现线程同步==
 
-  在JavaSE5.0中新增了一个java.util.concurrent包来支持同步。
+> 显式锁
+
+  在JavaSE5.0中新增了一个**java.util.concurrent包**来支持同步。
   ReentrantLock类是可重入、互斥、实现了Lock接口的锁，
   它与使用synchronized方法和快具有相同的基本行为和语义，并且扩展了其能力
 
 
   ReenreantLock类的常用方法有：
 
-​    ReentrantLock() : 创建一个ReentrantLock实例
-​    lock() : 获得锁
-​    unlock() : 释放锁
+​    **ReentrantLock() : 创建一个ReentrantLock实例**
+**​    lock() : 获得锁**
+**​    unlock() : 释放锁**
   注：ReentrantLock()还有一个可以创建公平锁的构造方法，但由于能大幅度降低程序运行效率，不推荐使用
 ​    
 
@@ -5378,9 +5910,10 @@ https://www.cnblogs.com/XHJT/p/3897440.html
             }
             //这里不再需要synchronized 
             public void save(int money) {
-                lock.lock();
+                lock.lock();//在try外面
                 try{
                     account += money;
+                    //保证线程安全的代码
                 }finally{
                     lock.unlock();
                 }
@@ -5393,26 +5926,18 @@ https://www.cnblogs.com/XHJT/p/3897440.html
 
 **总结：Synchronized与lock的异同？**
 
-相同：二者都可以解决线程安全问题
-不同：synchronized机制在执行完相应的代码逻辑以后，==自动的释放同步监视器==
-lock需要==手动的启动同步==（lock（）），同时结束同步也需要==手动的实现==（unlock（））（同时以为着lock的方式更为灵活）
+相同点：二者都可以解决线程安全问题
 
-优先使用顺序：
-LOCK-》同步代码块-》同步方法
+
+![image-20210323094025514](java学习.assets/image-20210323094025514.png)
 
 ### 线程间通信
 
 
 
-| 通信方法  | 描述                                                         |
-| --------- | ------------------------------------------------------------ |
-| wait()    | 一旦执行此方法，当前线程就进入阻塞状态，并释放同步监视器     |
-| notify    | 一旦执行此方法，就会唤醒被wait的一个线程，如果有多个线程，就唤醒优先级高的线程 |
-| notifyAll | 一旦执行此方法，就会唤醒所有被wait()的线程                   |
+![image-20210323100446291](java学习.assets/image-20210323100446291.png)
 
-==使用前提：这三个方法均只能使用在同步代码块或者同步方法中。==
-
-
+配合标志位或者容器使用
 
 
 
@@ -5460,7 +5985,23 @@ LOCK-》同步代码块-》同步方法
 
 
 
-## juc
+## juc（并发编程）
+
+==面试问的较多！！！==
+
+视频
+
+https://www.bilibili.com/video/BV1B7411L7tE?from=search&seid=13150095077870544533
+
+有pdf笔记
+
+
+
+
+
+
+
+
 
 
 
@@ -5565,6 +6106,8 @@ List<String> list2 = Collections.synchronizedList(new ArrayList<>());
 
 
 
+
+
 ### 7.ArrayList 和 LinkList区别？
 
 **ArrayList**
@@ -5619,7 +6162,7 @@ https://www.bilibili.com/video/BV1nJ411J7AA
 
 3.键位置是唯一的，底层的数据结构控制键的
 
-4.jdk1.8前数据结构是：链表 + 数组  jdk1.8之后是 ： 链表 + 数组  + 红黑树
+4==.jdk1.8前数据结构是：链表 + 数组  jdk1.8之后是 ： 链表 + 数组  + 红黑树==
 
 5.阈值(边界值) > 8 **并且**数组长度大于64，才将链表转换为红黑树，变为红黑树的目的是为了高效的查询。
 
@@ -5880,7 +6423,7 @@ public HashMap(int initialCapacity, float loadFactor) {//initialCapacity=10
 2）、如果n这时为0了（经过了cap-1之后），则经过后面的几次无符号右移依然是0，最后返回的capacity是		1（最后有个n+1的操作）。
 这里只讨论n不等于0的情况。
 
-3）、注意：**|（按位或运算）：运算规则：相同的二进制数位上，都是0的时候，结果为0，否则为1。**
+3）、注意：**|（按位==或==运算）：运算规则：相同的二进制数位上，==都是0的时候，结果为0，否则为1==。**
 
 ​	 **第一次右移** ：
 
@@ -6016,7 +6559,7 @@ TreeNodes占用空间是普通Nodes的两倍，所以只有当bin包含足够多
 红黑树的平均查找长度是log(n)，如果长度为8，平均查找长度为log(8)=3，链表的平均查找长度为n/2，当长度为8时，平均查找长度为8/2=4，这才有转换成树的必要；链表长度如果是小于等于6，6/2=3，而log(6)=2.6，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。
 ~~~
 
-**6.当链表的值小于6则会从红黑树转回链表** 
+**6.当链表的值==小于6==则会从红黑树转回链表** 
 
 ~~~java
  //当桶(bucket)上的结点数小于这个值时树转链表
@@ -6242,7 +6785,7 @@ final void putMapEntries(Map<? extends K, ? extends V> m, boolean evict) {
 
 注意：
 
- float ft = ((float)s / loadFactor) + 1.0F;**==这一行代码中为什么要加1.0F ？==**
+ **float ft = ((float)s / loadFactor) + 1.0F**;**==这一行代码中为什么要加1.0F ？==**
 
  **s/loadFactor的结果是小数，加1.0F与(int)ft相当于是对小数做一个向上取整以尽可能的保证更大容量，更大的容量能够减少resize的调用次数。所以 + 1.0F是为了获取更大的容量。** 
 
@@ -7071,13 +7614,13 @@ Map<String, Integer> crunchifySynchronizedMapObject = Collections.synchronizedMa
 
 经测试，==ConcurrentHashMap==生成的Map性能是明显优于Hashtable和Collections 的synchronizedMap()方法。
 
-### 6.2hash膨胀解决方式
+### 6.2==hash膨胀解决方式==
 
 https://www.cnblogs.com/wuchaodzxx/p/7396599.html#H1_0_2
 
 ![image-20210311161106594](java学习.assets/image-20210311161106594.png)
 
-#### 开放定址法
+#### 6.2.1开放定址法
 
 这种方法也称再散列法，其基本思想是：当关键字key的哈希地址p=H（key）**出现冲突时，以p为基础，产生另一个哈希地址p1，**如果p1仍然冲突，再以p为基础，产生另一个哈希地址p2，…，**直到找出一个不冲突的哈希地址pi** ，将相应元素存入其中。这种方法有一个通用的再散列函数形式：
 
@@ -7113,23 +7656,23 @@ Hi=（H（key）+di）% m  i=1，2，…，n
 >
 > 如果用伪随机探测再散列处理冲突，且伪随机数序列为：2，5，9，……..，则下一个哈希地址为H1=（3 + 2）% 11 = 5，仍然冲突，再找下一个哈希地址为H2=（3 + 5）% 11 = 8，此时不再冲突，将69填入8号单元。
 
-#### 再哈希法
+#### 6.2.2再哈希法
 
-这种方法是同时构造多个不同的哈希函数：
+这种方法是==同时构造多个不同的哈希函数：==
 
 Hi=RH1（key） i=1，2，…，k
 
 当哈希地址Hi=RH1（key）发生冲突时，再计算Hi=RH2（key）……，直到冲突不再产生。这种方法不易产生聚集，但增加了计算时间。
 
-#### 链地址法
+#### 6.2.3链地址法
 
 这种方法的基本思想是将所有哈希地址为i的元素构成一个称为同义词链的单链表，并将单链表的头指针存在哈希表的第i个单元中，因而查找、插入和删除主要在同义词链中进行。链地址法适用于经常进行插入和删除的情况。
 
  
 
-#### 建立公共溢出区
+#### 6.2.4建立公共溢出区
 
-这种方法的基本思想是：将哈希表分为基本表和溢出表两部分，凡是和基本表发生冲突的元素，一律填入溢出表。
+这种方法的基本思想是：==将哈希表分为基本表和溢出表两部分==，**凡是和基本表发生冲突的元素，一律填入溢出表。**
 
  
 
@@ -7137,9 +7680,9 @@ Hi=RH1（key） i=1，2，…，k
 
 
 
+### 6.3优缺点
 
-
-## 开放散列（open hashing）/ 拉链法（针对桶链结构）
+#### 开放散列（open hashing）/ 拉链法（针对桶链结构）
 
 1）优点： ①对于记录总数频繁可变的情况，处理的比较好（也就是避免了动态调整的开销） ②由于记录存储在结点中，而结点是动态分配，不会造成内存的浪费，所以尤其适合那种记录本身尺寸（size）很大的情况，因为此时指针的开销可以忽略不计了 ③删除记录时，比较方便，直接通过指针操作即可
 
@@ -7147,7 +7690,7 @@ Hi=RH1（key） i=1，2，…，k
 
 2）缺点： ①存储的记录是随机分布在内存中的，这样在查询记录时，相比结构紧凑的数据类型（比如数组），哈希表的跳转访问会带来额外的时间开销 ②如果所有的 key-value 对是可以提前预知，并之后不会发生变化时（即不允许插入和删除），可以人为创建一个不会产生冲突的完美哈希函数（perfect hash function），此时封闭散列的性能将远高于开放散列 ③由于使用指针，记录不容易进行序列化（serialize）操作
 
-## 封闭散列（closed hashing）/ 开放定址法
+#### 封闭散列（closed hashing）/ 开放定址法
 
 1）优点： ①记录更容易进行序列化（serialize）操作 ②如果记录总数可以预知，可以创建完美哈希函数，此时处理数据的效率是非常高的
 
