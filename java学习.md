@@ -6,10 +6,6 @@
 
 
 
-juc、线程池、
-
-https://www.bilibili.com/video/BV1B7411L7tE?p=22&spm_id_from=pageDriver
-
 ==工====厂模式==
 
 
@@ -20,7 +16,7 @@ https://www.bilibili.com/video/BV1B7411L7tE?p=22&spm_id_from=pageDriver
 
 
 
-上午看视频，下午敲代码
+
 
 
 
@@ -1326,9 +1322,9 @@ public static void main(String[] args) throws Exception {
 
  Constructor:==构造方法==
 > 	* 创建对象：
-> 																				
+> 																					
 > 		* T newInstance(Object... initargs)  
-> 																				
+> 																					
 > 		（==即 constructor.newInstance("张三", 23);==  ）
 >
 > ​	* 如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法
@@ -5937,7 +5933,7 @@ https://www.cnblogs.com/XHJT/p/3897440.html
 
 ![image-20210323100446291](java学习.assets/image-20210323100446291.png)
 
-配合标志位或者容器使用
+![image-20210327211224950](java学习.assets/image-20210327211224950.png)
 
 
 
@@ -5985,7 +5981,7 @@ https://www.cnblogs.com/XHJT/p/3897440.html
 
 
 
-## juc（并发编程）
+## ==juc（见pdf）==
 
 ==面试问的较多！！！==
 
@@ -9267,12 +9263,16 @@ filtering：false表示不过滤，true表示过滤
 
 https://www.bilibili.com/video/BV1yE411Z7AP?p=4&spm_id_from=pageDriver
 
+狂神讲解
+
+https://www.bilibili.com/video/BV1iJ411d7jS?p=2&spm_id_from=pageDriver
+
 ## Java类加载机制**
 
 ### 类加载的时机
 
-1. 隐式加载 new 创建类的实例,
-2. 显式加载：loaderClass,forName等
+1. ==隐式==加载 new 创建类的实例,
+2. ==显式==加载：loaderClass,forName等
 3. 访问类的静态变量，或者为静态变量赋值
 4. 调用类的静态方法
 5. 使用反射方式创建某个类或者接口对象的Class对象。
@@ -9290,21 +9290,29 @@ https://www.bilibili.com/video/BV1yE411Z7AP?p=4&spm_id_from=pageDriver
 
 我们编写的java文件都是保存着业务逻辑代码。java编译器将 .java 文件编译成扩展名为 .class 的文件。.class 文件中保存着java转换后，虚拟机将要执行的指令。当需要某个类的时候，java虚拟机会加载 .class 文件，并创建对应的class对象，将class文件加载到虚拟机的内存，这个过程被称为类的加载。
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190302102035338.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MDIzNjk0OA==,size_16,color_FFFFFF,t_70)
+
 
 #### 加载
 
-用于加载类，它有三种类加载器，根据双亲委托模型，从不同路径进行加载：
+![image-20210328161529513](java学习.assets/image-20210328161529513.png)
+
+> 一个类只有一个Class对象，可以理解为car1、car2、car3共用一个Car Class模板
+
+
+
+它有三种类加载器，根据双亲委托模型，从不同路径进行加载：
 
 类加载过程的一个阶段，ClassLoader通过一个类的**完全限定名查找此类字节码文件**，**并利用字节码文件创建一个class对象**。
 
 **类记载器的任务是根据类的全限定名来读取此类的二进制字节流到 JVM 中，然后转换成一个与目标类对象的java.lang.Class 对象的实例，在java 虚拟机提供三种类加载器，引导类加载器，扩展类加载器，系统类加载器。**
 
+
+
 JVM中提供了三层的ClassLoader：
 
-1. Bootstrap ClassLoader - 加载 rt.jar 核心类库，是优先级最高的加载器
-2. Extension ClassLoader - 负责加载 jre\lib\ext 文件夹中的类
-3. Application ClassLoader -负责加载 CLASSPATH 指定的类库
+1. Bootstrap ClassLoader - 加载 **rt.jar 核心类库**，是优先级最高的加载器
+2. Extension ClassLoader - 负责加载 **jre\lib\ext** 文件夹中的类
+3. Application ClassLoader -负责加载 **CLASSPATH** 指定的类库
 
 
 
@@ -9362,11 +9370,21 @@ forName和loaderClass区别
 
 
 
+---
+
+### 狂神笔记
 
 
 
 
 
+类加载器
+
+
+
+
+
+---
 
 ## jvm内存结构
 
@@ -9378,11 +9396,13 @@ https://www.jdon.com/idea/jvm.html
 
 ### 运行时数据区
 
-![image-20210306102538504](java学习.assets/image-20210306102538504.png)
 
 
+**一个完整的Java虚拟机，包括类装载子系统，运行时数据区（包括堆栈等），执行引擎三大部分组成**
 
 ![image-20210306144810014](java学习.assets/image-20210306144810014.png)
+
+
 
 1. 类加载子系统 运行时将.class 文件的内容和静态常量池放进方法区
 
@@ -9502,11 +9522,17 @@ https://www.bilibili.com/video/BV1yE411Z7AP?p=14&spm_id_from=pageDriver
 
 ### 本地方法栈
 
+![image-20210328165201698](java学习.assets/image-20210328165201698.png)
+
 调用底层方法
+
+
+
+![image-20210328165552183](java学习.assets/image-20210328165552183.png)
 
 ---
 
-### 堆
+### ==堆==
 
 
 
@@ -9514,36 +9540,83 @@ https://www.bilibili.com/video/BV1yE411Z7AP?p=14&spm_id_from=pageDriver
 
 Heap 堆
 
-- 通过 new 关键字，创建对象都会使用堆内存
+- **通过 new 关键字，创建对象都会使用堆内存**
 
 特点
 
-1. 它是线程共享的，堆中对象都需要考虑线程安全的问题
-2. 有垃圾回收机制
+1. 它是**线程共享**的，堆中对象都需要考虑线程安全的问题
+2. 有**垃圾回收机制**
+
+![image-20210328201405696](java学习.assets/image-20210328201405696.png)
+
+
+
+<img src="java学习.assets/image-20210328202333286.png" alt="image-20210328202333286" style="zoom:200%;" />
+
+GC垃圾回收，主要是在伊甸园区和养老区
+
+#### 堆中的结构
+
+![image-20210328203800276](java学习.assets/image-20210328203800276.png)
+
+==元空间：逻辑上存在，物理上不存在==
+
+生存15次后进入老年代 
+
+**永久区的历史**
+
+![image-20210328202832873](java学习.assets/image-20210328202832873.png)
 
 #### 堆内存溢出
 
+假设内存满了，OOM，堆内存平够!
+
+java.lang.OutOfMemoryError: Java heap space
 
 
-#### 堆内存诊断
 
-1. jps 工具
+==**措施**==
 
-   查看当前系统中有哪些 java 进程
+1.尝试扩大堆内存看结果
+2.分析内存，看一下那个地方出现了问题（专业工具)
 
-2. jmap 工具
 
-   查看堆内存占用情况 jmap - heap 进程id
 
-3. ==jconsole 工具==
 
-   （使用方法：终端中直接输入jconsole）
+
+#### ==堆内存诊断==
+
+##### 1.jps 工具
+
+查看当前系统中有哪些 java 进程
+
+##### 2.jmap 工具
+
+查看堆内存占用情况 jmap - heap 进程id
+
+##### 3.==jconsole 工具==
+
+（使用方法：终端中直接输入jconsole）
 
 ​	https://www.bilibili.com/video/BV1yE411Z7AP?p=20
 
 ​	==图形界面的==，多功能的监测工具，可以==连续监测==
 
+##### 4.==jprofiler==
 
+项目上线后，用此软件
+
+> 视频教程
+>
+> https://www.bilibili.com/video/BV1iJ411d7jS?p=9
+>
+> 博客教程
+>
+> https://blog.csdn.net/weixin_33602978/article/details/85331961
+
+==看哪一行代码 出错==
+
+![image-20210329153049582](java学习.assets/image-20210329153049582.png)
 
 ### 方法区==（StringTable)==
 
@@ -9553,11 +9626,12 @@ https://blog.csdn.net/cd546566850/article/details/105353791
 
 #### 存放什么
 
-**==Class对象是存放在堆区的，不是方法区==**！这点很多人容易犯错。
 
-**类的元数据**（元数据并不是类的Class对象！Class对象是加载的最终产品，**类的方法代码，变量名，方法名，访问权限，返回值等等都是在方法区的**）才是存在方法区的！
+方法区是被所有线程共享，**所有字段和方法字节码，以及一些特殊方法，如构造函数，接口代码**也在此定义，简单说，所有定义的方法的信息都保存在该区域，此区域属于共享区间;
 
+==**静态变量、常量、类信息(构造方法、接口定义)、运行时的常量池存在方法区中，但是实例变量存在堆内存中，和方法区无关**==
 
+static final Class
 
 #### 方法区溢出
 
@@ -9711,19 +9785,27 @@ https://www.bilibili.com/video/BV1yE411Z7AP?p=38
 
 ## ==gc垃圾回收==与jvm调优**
 
+
+
 视频讲解
 
 https://www.bilibili.com/video/BV1yE411Z7AP?p=48
+
+
+
+### 垃圾回收基础知识点
+
+
 
 ### 如何判断对象可以回收
 
 
 
-#### 引用计数法
+#### ==引用计数法==
 
 被引用则加一，不被引用则减一。
 
-出现问题，循环引用
+==出现问题，循环引用==
 
 ![image-20210307170548576](java学习.assets/image-20210307170548576.png)
 
@@ -9834,7 +9916,7 @@ public class Demo2_4 {
 }
 ```
 
-### 垃圾回收算法
+### ==垃圾回收算法***==
 
 #### 标记清除
 
@@ -9846,7 +9928,7 @@ public class Demo2_4 {
 
 ![image-20210307203600783](java学习.assets/image-20210307203600783.png)
 
-#### 标记整理
+#### 标记整理（标记压缩）
 
 定义：Mark Compact
 
@@ -9856,16 +9938,59 @@ public class Demo2_4 {
 
 ![image-20210307203708182](java学习.assets/image-20210307203708182.png)
 
-#### 复制
+#### 复制算法
+
+https://www.bilibili.com/video/BV1iJ411d7jS?p=11
 
 定义：Copy
 
 - 不会有内存碎片
-- 需要占用双倍内存空间
+- 需要占用双倍内存空间==（多一半空间，永远空to）==
+
+
+
+复制算法==最佳使用场景==:对象存活度较低的时候;新生区~
+
+
+
+==**主要用在：伊甸园、from、to区**==
+
+==谁是to区域？谁空谁是to区==
 
 ![image-20210307203753148](java学习.assets/image-20210307203753148.png)
 
-### 分代垃圾回收
+生存15次后进入老年代
+
+![image-20210329085513759](java学习.assets/image-20210329085513759.png)
+
+#### 总结
+
+内存效率:复制算法>标记清除算法>标记压缩算法―(时间复杂度)
+
+内存整齐度:复制算法=标记压缩算法>标记清除算法
+
+内存利用率:标记压缩算法=标记清除算法>复制算法
+
+
+
+思考一个问题:难道没有最优算法吗?
+答案:没有，没有最好的算法，只有最合适的算法----->==GC:分代收集算法==
+
+
+
+年轻代:
+
+- 存活率低
+- 复制算法!
+
+
+
+老年代:
+
+- 区域大:存活率
+- 标记清除(内存碎片不是太多)+标记压缩混合实现
+
+### ==分代垃圾回收==
 
 https://www.bilibili.com/video/BV1yE411Z7AP?p=61
 
@@ -9880,27 +10005,36 @@ https://blog.csdn.net/MrLiii/article/details/113726718
 - 对象首先分配在伊甸园区域
 - ==新生代==空间不足时，触发 minor gc，伊甸园和 from 存活的对象使用 copy 复制到 to 中，存活的对象年龄加 1并且交换 from to。而没有复制到TO空间的就当作垃圾处理
 - minor gc 会引发 stop the world，暂停其它用户的线程，等垃圾回收结束，用户线程才恢复运行
-- 当对象寿命==超过阈值==时，会晋升至老年代，最大寿命是15（4bit）
+- 当对象寿命==超过阈值==时，会晋升至老年代，最大寿命是==15==（4bit）
 - 当老年代空间不足，会先尝试触发 minor gc，如果之后空间仍不足，那么触发 full gc，STW的时间更长
 
-#### 相关参数
+#### ==相关参数**==
 
-| 堆初始大小         | -Xms                                                         |
-| ------------------ | ------------------------------------------------------------ |
-| 堆最大大小         | -Xmx 或 -XX:MaxHeapSize=size                                 |
-| 新生代大小         | -Xmn 或 (-XX:NewSize=size + -XX:MaxNewSize=size )            |
-| 幸存区比例（动态） | -XX:InitialSurvivorRatio=ratio 和 -XX:+UseAdaptiveSizePolicy |
-| 幸存区比例         | -XX:SurvivorRatio=ratio      //radio为伊甸园占新生代比例     |
-| 晋升阈值           | -XX:MaxTenuringThreshold=threshold                           |
-| 晋升详情           | -XX:+PrintTenuringDistribution                               |
-| GC详情             | -XX:+PrintGCDetails -verbose:gc                              |
-| FullGC 前 MinorGC  | -XX:+ScavengeBeforeFullGC                                    |
+命令后面直接跟“数字+单位”
+
+例如：-Xm==s==1024m
+
+| 堆==初始==大小                                   | -Xm==s==                                                     |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| 堆==最大==大小                                   | -Xm==x== 或 -XX:MaxHeapSize=size                             |
+| 新生代大小                                       | -Xmn 或 (-XX:NewSize=size + -XX:MaxNewSize=size )            |
+| 幸存区比例（动态）                               | -XX:InitialSurvivorRatio=ratio 和 -XX:+UseAdaptiveSizePolicy |
+| 幸存区比例                                       | -XX:SurvivorRatio=ratio      //radio为伊甸园占新生代比例     |
+| ==晋升阈值==（设置多少次进入老年代，默认==15==） | -XX:MaxTenuringThreshold=threshold                           |
+| 晋升详情                                         | -XX:+PrintTenuringDistribution                               |
+| ==GC详情==                                       | -XX:+==PrintGCDetails== -verbose:gc                          |
+| FullGC 前 MinorGC                                | -XX:+ScavengeBeforeFullGC                                    |
+| ==oom Dump==                                     | -XX:+HeapDumpOnOutOfMemoryError                              |
 
 
 
 使用方法
 
-https://www.bilibili.com/video/BV1yE411Z7AP?p=66&spm_id_from=pageDriver
+
+
+
+
+https://www.bilibili.com/video/BV1iJ411d7jS?p=9&spm_id_from=pageDriver
 
 ### 垃圾回收器
 
